@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <div class="row justify-content-md-center">
+  <div class="container"> 
+    <div class="row justify-content-center">
       <h2>Register</h2>
     </div>
     <br />
