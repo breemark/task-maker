@@ -1,33 +1,55 @@
 <template>
-  <div class="container">
-    <div class="row justify-content-center">
-      <h2>Login</h2>
-    </div>
-    <br />
-    <div>
-      <b-form @submit="onSubmit">
-        <b-form-group
-          id="input-group-1"
-          label="Email:"
-          label-for="input-1"
-          description="We'll never share your email with anyone else."
-        >
-          <b-form-input id="input-1" type="email" required placeholder="Email"></b-form-input>
-        </b-form-group>
+  <section class="section">
+    <div class="container">
+      <div class="columns">
+        <div class="column is-4 is-offset-4">
+          <h2 class="title has-text-centered">Welcome back!</h2>
 
-        <b-form-group id="input-group-3" label="Password:" label-for="input-3">
-          <b-form-input type="password" id="input-2" required placeholder="Password"></b-form-input>
-        </b-form-group>
+          <b-form @submit.prevent="login">
+            <b-form-group description="We'll never share your email with anyone else.">
+              <b-form-input type="email" required placeholder="Email" v-model.trim="form.email"></b-form-input>
+            </b-form-group>
 
-        <b-button type="submit" variant="primary">Submit</b-button>
-      </b-form>
+            <b-form-group>
+              <b-form-input type="password" required placeholder="Password" v-model="form.password"></b-form-input>
+            </b-form-group>
+
+            <b-button type="submit" variant="primary">Login</b-button>
+          </b-form>
+
+          <p>
+            Don't have an account?
+            <nuxt-link to="/register">Register</nuxt-link>
+          </p>
+        </div>
+      </div>
     </div>
-  </div>
+  </section>
 </template>
 
 <script>
-export default {};
-</script>
+export default {
+  data() {
+    return {
+      form: {
+        email: "",
+        password: "",
+      },
+    };
+  },
+  methods: {
+    async login() {
+      try {
+        let response = await this.$auth.loginWith("local", {
+          data: this.form,
+        });
+        console.log(response);
+      } catch (err) {
+        console.error(err.message);
+      }
 
-<style>
-</style>
+      this.$router.push("/");
+    },
+  },
+};
+</script>

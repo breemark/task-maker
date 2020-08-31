@@ -54,6 +54,7 @@ export default {
     'bootstrap-vue/nuxt',
     // Doc: https://axios.nuxtjs.org/usage
     '@nuxtjs/axios',
+    '@nuxtjs/auth',
   ],
   /*
   ** Axios module configuration
@@ -61,6 +62,21 @@ export default {
   */
   axios: {
     baseURL: 'https://braitos.com/api/v1'
+  },
+  /**
+   * Auth
+   */
+  auth: {
+    strategies: {
+      local: {
+        endpoints: {
+          login: { url: 'auth/login', method: 'post', propertyName: 'access_token' },
+          user: { url: 'auth/me', method: 'get', propertyName: '' },
+          // logout: { url: 'auth/logout', method: 'post' }
+        },
+        tokenType: 'bearer',
+      }
+    }
   },
   /*
   ** Build configuration

@@ -1,41 +1,43 @@
 <template>
-  <div class="container"> 
+  <div class="container">
     <div class="row justify-content-center">
-      <h2>Register</h2>
+      <h2 class>Register</h2>
     </div>
     <br />
-    <div>
-      <b-form @submit="onSubmit">
-        <b-form-group id="input-group-2" label="Name:" label-for="input-2">
-          <b-form-input id="input-2" required placeholder="Name"></b-form-input>
-        </b-form-group>
 
-        <b-form-group
-          id="input-group-1"
-          label="Email:"
-          label-for="input-1"
-          description="We'll never share your email with anyone else."
-        >
-          <b-form-input id="input-1" type="email" required placeholder="Email"></b-form-input>
-        </b-form-group>
+<!-- 
+    <b-form @submit.prevent="register">
+      <b-form-group>
+        <b-form-input type="text" required placeholder="Name" v-model="name"></b-form-input>
+      </b-form-group>
 
-        <b-form-group id="input-group-3" label="Password:" label-for="input-3">
-          <b-form-input type="password" id="input-2" required placeholder="Password"></b-form-input>
-        </b-form-group>
+      <b-form-group description="We'll never share your email with anyone else.">
+        <b-form-input type="email" required placeholder="Email" v-model="email"></b-form-input>
+      </b-form-group>
 
-        <b-form-group id="input-group-3" label="Confirm password:" label-for="input-3">
-          <b-form-input type="password" id="input-2" required placeholder="Password"></b-form-input>
-        </b-form-group>
+      <b-form-group>
+        <b-form-input type="password" required placeholder="Password" v-model="password"></b-form-input>
+      </b-form-group>
 
-        <b-button type="submit" variant="primary">Submit</b-button>
-      </b-form>
+      <b-form-group>
+        <b-form-input
+          type="password"
+          required
+          placeholder="Confirm password"
+          v-model="password_confirm"
+        ></b-form-input>
+      </b-form-group> -->
+
+      <b-button type="submit" variant="primary">Register</b-button>
+    </b-form>
+
+    <div class="row justify-content-center" style="margin-top: 20px">
+      <p>Already got an account?</p>&nbsp;
+      <nuxt-link to="/login">Login</nuxt-link>
     </div>
   </div>
 </template>
 
 <script>
-export default {};
-</script>
 
-<style>
-</style>
+</script>
