@@ -36,7 +36,7 @@ export default {
   */
   plugins: [
     './plugins/mixins/user.js',
-    './plugins/axios.js'
+    './plugins/axios.js',
   ],
   /*
   ** Auto import components
