@@ -15,11 +15,11 @@
         <b-navbar-nav v-if="authenticated" class="ml-auto">
           <b-nav-item-dropdown right>
             <template v-slot:button-content>
-              <strong>{{ $auth.user.name }} </strong>
+              <strong>{{ user.name }} </strong>
             </template>
             <b-dropdown-item to="#">Profile</b-dropdown-item>
             <b-dropdown-item href="#">My Tasks</b-dropdown-item>
-            <b-dropdown-item href="#">Logout</b-dropdown-item>
+            <b-dropdown-item @click.prevent="logout">Logout</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
         <b-navbar-nav v-else class="ml-auto">
@@ -32,7 +32,13 @@
 </template>
 
 <script>
-
+export default {
+  methods: {
+    logout(){
+      this.$auth.logout()
+    }
+  }
+}
 </script>
 
 <style>

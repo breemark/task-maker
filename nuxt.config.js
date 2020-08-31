@@ -73,7 +73,7 @@ export default {
         endpoints: {
           login: { url: 'auth/login', method: 'post', propertyName: 'access_token' },
           user: { url: 'auth/me', method: 'get', propertyName: '' },
-          // logout: { url: 'auth/logout', method: 'post' }
+          logout: { url: 'auth/logout', method: 'post' }
         },
         tokenType: 'bearer',
       }
@@ -85,7 +85,7 @@ export default {
   */
   loading: {
     color: 'blue',
-    height: '5px',
+    height: '3px',
   },
   build: {
   }

@@ -1,22 +1,21 @@
 <template>
   <div class="container">
     <div class="row justify-content-center">
-      <h2 class>Register</h2>
+      <h2>Register</h2>
     </div>
     <br />
 
-<!-- 
     <b-form @submit.prevent="register">
       <b-form-group>
-        <b-form-input type="text" required placeholder="Name" v-model="name"></b-form-input>
+        <b-form-input type="text" required placeholder="Name" v-model="form.name"></b-form-input>
       </b-form-group>
 
       <b-form-group description="We'll never share your email with anyone else.">
-        <b-form-input type="email" required placeholder="Email" v-model="email"></b-form-input>
+        <b-form-input type="email" required placeholder="Email" v-model.trim="form.email"></b-form-input>
       </b-form-group>
 
       <b-form-group>
-        <b-form-input type="password" required placeholder="Password" v-model="password"></b-form-input>
+        <b-form-input type="password" required placeholder="Password" v-model="form.password"></b-form-input>
       </b-form-group>
 
       <b-form-group>
@@ -24,9 +23,9 @@
           type="password"
           required
           placeholder="Confirm password"
-          v-model="password_confirm"
+          v-model="form.password_confirm"
         ></b-form-input>
-      </b-form-group> -->
+      </b-form-group>
 
       <b-button type="submit" variant="primary">Register</b-button>
     </b-form>
@@ -39,5 +38,29 @@
 </template>
 
 <script>
-
+export default {
+  data() {
+    return {
+      form: {
+        name: "",
+        email: "",
+        password: "",
+        password_confirm: "",
+      },
+    };
+  },
+  methods: {
+    async register() {
+      await this.$axios.$post("auth/register", this.form);
+      await this.$auth.loginWith("local", {
+        data: {
+          email: this.form.email,
+          password: this.form.password,
+        },
+      })
+      // Redirect
+      this.$router.push('');
+    },
+  },
+};
 </script>
