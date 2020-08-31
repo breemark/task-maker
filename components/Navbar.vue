@@ -12,38 +12,27 @@
           <b-nav-item to="/users">Users</b-nav-item>
         </b-navbar-nav>
 
-        <b-navbar-nav v-if="loggedIn" class="ml-auto">
-          <!-- {{ $auth.user }} -->
+        <b-navbar-nav v-if="authenticated" class="ml-auto">
           <b-nav-item-dropdown right>
             <template v-slot:button-content>
-              <strong>{{ $auth.user.name }}</strong>
+              <strong>{{ $auth.user.name }} </strong>
             </template>
             <b-dropdown-item to="#">Profile</b-dropdown-item>
             <b-dropdown-item href="#">My Tasks</b-dropdown-item>
             <b-dropdown-item href="#">Logout</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
-
         <b-navbar-nav v-else class="ml-auto">
           <b-nav-item to="/login">Login</b-nav-item>
           <b-nav-item to="/register">Register</b-nav-item>
         </b-navbar-nav>
-
       </b-collapse>
     </b-navbar>
   </div>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
 
-export default {
-  computed: {
-    ...mapGetters({
-      loggedIn: "auth/authenticated",
-    }),
-  },
-};
 </script>
 
 <style>
