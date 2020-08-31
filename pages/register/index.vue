@@ -23,7 +23,7 @@
           type="password"
           required
           placeholder="Confirm password"
-          v-model="form.password_confirm"
+          v-model="form.password_confirmation"
         ></b-form-input>
       </b-form-group>
 
@@ -45,7 +45,7 @@ export default {
         name: "",
         email: "",
         password: "",
-        password_confirm: "",
+        password_confirmation: "",
       },
     };
   },
