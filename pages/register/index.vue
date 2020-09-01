@@ -12,6 +12,7 @@
 
       <b-form-group description="We'll never share your email with anyone else.">
         <b-form-input type="email" required placeholder="Email" v-model.trim="form.email"></b-form-input>
+        <small class="form-text text-danger" v-if="errors.email">{{errors.email[0]}}</small>
       </b-form-group>
 
       <b-form-group>
@@ -25,6 +26,7 @@
           placeholder="Confirm password"
           v-model="form.password_confirmation"
         ></b-form-input>
+        <small class="form-text text-danger" v-if="errors.password">{{errors.password[0]}}</small>
       </b-form-group>
 
       <b-button type="submit" variant="primary">Register</b-button>
@@ -50,16 +52,22 @@ export default {
     };
   },
   methods: {
-    async register() {
-      await this.$axios.$post("auth/register", this.form);
-      await this.$auth.loginWith("local", {
-        data: {
-          email: this.form.email,
-          password: this.form.password,
-        },
-      })
-      // Redirect
-      this.$router.push('');
+    register() {
+      this.$axios
+        .$post("auth/register", this.form)
+        .then((data) => {
+          // login
+          this.$auth.loginWith("local", {
+            data: {
+              email: this.form.email,
+              password: this.form.password,
+            },
+          });
+          console.log(data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
 };

@@ -1,13 +1,14 @@
 <template>
   <div class="container">
     <div class="row justify-content-center">
-      <h2>Welcome back!</h2>
+      <h2>Login</h2>
     </div>
+    <br />
     <b-form @submit.prevent="login">
       <b-form-group description="We'll never share your email with anyone else.">
         <b-form-input type="email" required placeholder="Email" v-model.trim="form.email"></b-form-input>
+        <small class="form-text text-danger" v-if="errors.email">{{errors.email[0]}}</small>
       </b-form-group>
-
       <b-form-group>
         <b-form-input type="password" required placeholder="Password" v-model="form.password"></b-form-input>
       </b-form-group>
@@ -33,17 +34,21 @@ export default {
     };
   },
   methods: {
-    async login() {
-      try {
-        let response = await this.$auth.loginWith("local", {
-          data: this.form,
+    login() {
+      this.$auth
+        .loginWith("local", {
+          data: {
+            email: this.form.email,
+            password: this.form.password,
+          },
+        })
+        .then((data) => {
+          console.log(data);
+          this.$router.push("/");
+        })
+        .catch((err) => {
+          console.log(err);
         });
-        console.log(response);
-      } catch (err) {
-        console.error(err.message);
-      }
-
-      this.$router.push("/");
     },
   },
 };

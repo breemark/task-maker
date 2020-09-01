@@ -1,3 +1,10 @@
+export const state = () => ({
+    busy: false,
+    loggedIn: false,
+    strategy: "local",
+    user: false
+});
+
 export const getters = {
     authenticated(state) {
         return state.auth.loggedIn;
@@ -6,3 +13,4 @@ export const getters = {
         return state.auth.user;
     }
 }
+
