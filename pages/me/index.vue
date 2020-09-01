@@ -5,11 +5,15 @@
       <div class="content">
         <p>
           <strong>Username:</strong>
-          <!-- {{ loggedInUser.name }} -->
+          {{ user.name }}
+        </p>
+        <p>
+          <strong>Role:</strong>
+          {{ isAdmin(user) }}
         </p>
         <p>
           <strong>Email:</strong>
-          <!-- {{ loggedInUser.email }} -->
+          {{ user.email }}
         </p>
       </div>
     </div>
@@ -17,5 +21,16 @@
 </template>
 
 <script>
-
+export default {
+  middleware: ["auth"],
+  methods: {
+    isAdmin(user) {
+      if (user.is_admin) {
+        return "Administrator";
+      } else {
+        return "User";
+      }
+    },
+  },
+};
 </script>

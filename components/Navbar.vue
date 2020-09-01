@@ -17,7 +17,7 @@
             <template v-slot:button-content>
               <strong>{{ user.name }} </strong>
             </template>
-            <b-dropdown-item to="#">Profile</b-dropdown-item>
+            <b-dropdown-item to="/me">Profile</b-dropdown-item>
             <b-dropdown-item href="#">My Tasks</b-dropdown-item>
             <b-dropdown-item @click.prevent="logout">Logout</b-dropdown-item>
           </b-nav-item-dropdown>
