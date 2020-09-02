@@ -92,7 +92,7 @@ export default {
   ** See https://nuxtjs.org/api/configuration-build/
   */
   loading: {
-    color: 'blue',
+    color: 'green',
     height: '3px',
   },
   build: {

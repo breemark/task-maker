@@ -25,6 +25,7 @@
 
 <script>
 export default {
+  middleware: ["guest"],
   data() {
     return {
       form: {
@@ -44,7 +45,7 @@ export default {
         })
         .then((data) => {
           console.log(data);
-          this.$router.push("/");
+          this.$router.push("/me");
         })
         .catch((err) => {
           console.log(err);

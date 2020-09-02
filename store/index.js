@@ -2,7 +2,7 @@ export const state = () => ({
     busy: false,
     loggedIn: false,
     strategy: "local",
-    user: false
+    user: false,
 });
 
 export const getters = {
@@ -11,6 +11,7 @@ export const getters = {
     },
     user(state) {
         return state.auth.user;
-    }
+    },
+
 }
 

@@ -9,7 +9,7 @@
         </p>
         <p>
           <strong>Role:</strong>
-          {{ isAdmin(user) }}
+          {{ user.is_admin ? 'Administrator': 'User' }}
         </p>
         <p>
           <strong>Email:</strong>
@@ -23,14 +23,6 @@
 <script>
 export default {
   middleware: ["auth"],
-  methods: {
-    isAdmin(user) {
-      if (user.is_admin) {
-        return "Administrator";
-      } else {
-        return "User";
-      }
-    },
-  },
+  methods: {},
 };
 </script>

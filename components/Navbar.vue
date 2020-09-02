@@ -6,7 +6,7 @@
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
       <b-collapse id="nav-collapse" is-nav>
-        <b-navbar-nav>
+        <b-navbar-nav v-if="authenticated">
           <b-nav-item to="/tasks">Tasks</b-nav-item>
           <b-nav-item to="/projects">Projects</b-nav-item>
           <b-nav-item to="/users">Users</b-nav-item>
@@ -15,7 +15,7 @@
         <b-navbar-nav v-if="authenticated" class="ml-auto">
           <b-nav-item-dropdown right>
             <template v-slot:button-content>
-              <strong>{{ user.name }} </strong>
+              <strong>{{ user.name }}</strong>
             </template>
             <b-dropdown-item to="/me">Profile</b-dropdown-item>
             <b-dropdown-item href="#">My Tasks</b-dropdown-item>
@@ -33,12 +33,15 @@
 
 <script>
 export default {
+  data() {
+    return {};
+  },
   methods: {
-    logout(){
-      this.$auth.logout()
-    }
-  }
-}
+    logout() {
+      this.$auth.logout();
+    },
+  },
+};
 </script>
 
 <style>
