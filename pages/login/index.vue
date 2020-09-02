@@ -9,6 +9,7 @@
         <b-form-input type="email" required placeholder="Email" v-model.trim="form.email"></b-form-input>
         <small class="form-text text-danger" v-if="errors.email">{{errors.email[0]}}</small>
       </b-form-group>
+      
       <b-form-group>
         <b-form-input type="password" required placeholder="Password" v-model="form.password"></b-form-input>
       </b-form-group>
