@@ -5,7 +5,10 @@
         <h1 class="title">Projects</h1>
       </div>
       <div class="col">
-        <nuxt-link class="btn btn-lg btn-outline-success float-right" to="/projects/create">Register Project</nuxt-link>
+        <nuxt-link
+          class="btn btn-lg btn-outline-success float-right"
+          to="/projects/create"
+        >Register Project</nuxt-link>
       </div>
     </div>
     <hr />
@@ -16,10 +19,9 @@
       class="bg-light mt-5 mb-5"
       style="padding:20px; border-radius:25px;"
     >
-      <h2>{{project.title}}</h2>
+      <h2>📁 {{project.title}}</h2>
       <p>{{project.content}}</p>
     </div>
-
   </div>
 </template>
 

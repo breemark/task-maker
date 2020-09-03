@@ -16,10 +16,19 @@
       class="bg-light mt-5 mb-5"
       style="padding:20px; border-radius:25px;"
     >
-      <h2>{{task.title}}</h2>
+      <h2>
+        <nuxt-link :to="{name: 'tasks-id', params: {id: task.id}}">{{task.title}}</nuxt-link>
+      </h2>
       <p>{{task.content}}</p>
     </div>
 
+    <nav>
+      <ul class="pagination justify-content-center">
+        <li v-for="(value, key) in links" :key="key" class="page-item">
+          <a @click="loadMore(value)" href="#" class="page-link">{{key}}</a>
+        </li>
+      </ul>
+    </nav>
   </div>
 </template>
 
@@ -29,14 +38,21 @@ export default {
   data() {
     return {
       tasks: [],
+      links: [],
     };
   },
   async asyncData({ $axios }) {
-    let { data } = await $axios.$get("/tasks");
-    // console.log(data);
+    let { data, links } = await $axios.$get("/tasks");
     return {
       tasks: data,
+      links,
     };
+  },
+  methods: {
+    async loadMore(value) {
+      let { data } = await this.$axios.$get(value);
+      return (this.tasks = { ...this.tasks, ...data });
+    },
   },
 };
 </script>
