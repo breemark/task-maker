@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col">
-        <h1 class="title">Tasks</h1>
+        <h1 class="title">📝 Tasks</h1>
       </div>
       <div class="col">
         <nuxt-link class="btn btn-lg btn-outline-success float-right" to="/tasks/create">Create Task</nuxt-link>
@@ -26,39 +26,51 @@
       :per-page="perPage"
       :current-page="currentPage"
       responsive
-    ></b-table>
+    >
+      <template v-slot:cell(deadline)="data">{{ format_date(data.value) }}</template>
+
+      <template v-slot:cell(id)="data">
+        <nuxt-link
+          class="btn btn-primary"
+          style="color: white !important;"
+          :to="{name: 'tasks-id', params: {id: data.value}}"
+        >View</nuxt-link>
+      </template>
+    </b-table>
   </div>
 </template>
 
 <script>
+import moment from "moment";
+
 export default {
   middleware: ["auth"],
   data() {
     return {
-      perPage: 10,
+      perPage: 9,
       currentPage: 1,
       tasks: [],
-      // links: [],
       fields: [
         {
           key: "title",
           sortable: true,
         },
-        // {
-        //   key: "content",
-        //   sortable: true,
-        // },
         {
           key: "deadline",
           sortable: true,
         },
         {
           key: "project_id",
+          label: "Project",
           sortable: true,
         },
         {
           key: "finished",
           sortable: true,
+        },
+        {
+          key: "id",
+          label: "",
         },
       ],
     };
@@ -67,13 +79,13 @@ export default {
     let { data, links } = await $axios.$get("/tasks");
     return {
       tasks: data,
-      links,
     };
   },
   methods: {
-    async loadMore(value) {
-      let { data } = await this.$axios.$get(value);
-      return (this.tasks = { ...this.tasks, ...data });
+    format_date(value) {
+      if (value) {
+        return moment.utc(String(value)).format("dddd, MMMM Do YYYY, hh:mm a");
+      }
     },
   },
   computed: {
@@ -85,4 +97,7 @@ export default {
 </script>
 
 <style>
+a {
+  text-decoration: none;
+}
 </style>

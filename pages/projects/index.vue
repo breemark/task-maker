@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col">
-        <h1 class="title">Projects</h1>
+        <h1 class="title">🗄️ Projects</h1>
       </div>
       <div class="col">
         <nuxt-link

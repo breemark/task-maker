@@ -2,7 +2,7 @@
   <div class="container">
     <div class="row">
       <div class="col">
-        <h1 class="title">Users</h1>
+        <h1 class="title">👥 Users</h1>
       </div>
       <div class="col">
         <nuxt-link class="btn btn-lg btn-outline-success float-right" to="/users/create">Register User</nuxt-link>

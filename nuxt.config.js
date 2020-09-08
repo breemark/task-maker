@@ -39,7 +39,7 @@ export default {
   ** Plugins to load before mounting the App
   ** https://nuxtjs.org/guide/plugins
   */
- 
+
   plugins: [
     './plugins/mixins/user.js',
     './plugins/axios.js',
@@ -92,8 +92,11 @@ export default {
   ** See https://nuxtjs.org/api/configuration-build/
   */
   loading: {
-    color: 'blue',
-    height: '3px',
+    color: 'green',
+    height: '10px',
+    continuous: 'false',
+    throttle: '500',
+    duration: '6000'
   },
   build: {
   }

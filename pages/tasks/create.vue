@@ -22,15 +22,15 @@
           <b-form-checkbox-group v-model="form.finished">
             <b-form-checkbox value="true">Task completed</b-form-checkbox>
           </b-form-checkbox-group>
-        </b-form-group> -->
+        </b-form-group>-->
 
         <b-form-group label="Deadline:">
-          <input class="form-control" type="date" v-model="form.deadline" />
+          <input class="form-control" type="datetime-local" v-model="form.deadline" />
         </b-form-group>
 
         <!-- <b-form-group label="Project:">
           <b-form-select v-model="form.project_id" :options="projects"></b-form-select>
-        </b-form-group> -->
+        </b-form-group>-->
 
         <b-button type="submit" variant="primary btn-lg">Submit</b-button>
         <!-- <b-button type="reset" variant="danger btn-lg">Reset</b-button> -->
@@ -51,11 +51,7 @@ export default {
         deadline: "",
         // project_id: null,
       },
-      projects: [
-        { text: "Select One", value: null },
-        "1",
-        "2",
-      ],
+      projects: [{ text: "Select One", value: null }, "1", "2"],
     };
   },
   methods: {
