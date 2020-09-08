@@ -8,27 +8,25 @@
         <nuxt-link class="btn btn-lg btn-outline-success float-right" to="/tasks/create">Create Task</nuxt-link>
       </div>
     </div>
-    <hr />
 
-    <div
-      v-for="(task, index) in tasks"
-      :key="index"
-      class="bg-light mt-5 mb-5"
-      style="padding:20px; border-radius:25px;"
-    >
-      <h2>
-        <nuxt-link :to="{name: 'tasks-id', params: {id: task.id}}">{{task.title}}</nuxt-link>
-      </h2>
-      <p>{{task.content}}</p>
-    </div>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="rows"
+      :per-page="perPage"
+      aria-controls="tasks-table"
+    ></b-pagination>
 
-    <nav>
-      <ul class="pagination justify-content-center">
-        <li v-for="(value, key) in links" :key="key" class="page-item">
-          <a @click="loadMore(value)" href="#" class="page-link">{{key}}</a>
-        </li>
-      </ul>
-    </nav>
+    <p class="mt-3">Current Page: {{ currentPage }}</p>
+    <b-table
+      id="tasks-table"
+      striped
+      hover
+      :items="tasks"
+      :fields="fields"
+      :per-page="perPage"
+      :current-page="currentPage"
+      responsive
+    ></b-table>
   </div>
 </template>
 
@@ -37,8 +35,32 @@ export default {
   middleware: ["auth"],
   data() {
     return {
+      perPage: 10,
+      currentPage: 1,
       tasks: [],
-      links: [],
+      // links: [],
+      fields: [
+        {
+          key: "title",
+          sortable: true,
+        },
+        // {
+        //   key: "content",
+        //   sortable: true,
+        // },
+        {
+          key: "deadline",
+          sortable: true,
+        },
+        {
+          key: "project_id",
+          sortable: true,
+        },
+        {
+          key: "finished",
+          sortable: true,
+        },
+      ],
     };
   },
   async asyncData({ $axios }) {
@@ -52,6 +74,11 @@ export default {
     async loadMore(value) {
       let { data } = await this.$axios.$get(value);
       return (this.tasks = { ...this.tasks, ...data });
+    },
+  },
+  computed: {
+    rows() {
+      return this.tasks.length;
     },
   },
 };
