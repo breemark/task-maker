@@ -2,6 +2,7 @@
   <section class="section">
     <div class="container">
       <h2 class="title">My Profile</h2>
+      <hr>
       <div class="content">
         <p>
           <strong>Username:</strong>

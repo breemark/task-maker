@@ -35,7 +35,7 @@
           style="color: white !important;"
           :to="{name: 'tasks-id', params: {id: data.value}}"
         >View</nuxt-link>
-        <b-button @click="deleteTask(data.value)"  variant="danger">Delete</b-button>
+        <b-button @click="deleteTask(data.value)" variant="danger">Delete</b-button>
       </template>
     </b-table>
   </div>

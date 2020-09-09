@@ -81,7 +81,7 @@ export default {
     },
     async deleteTask(id) {
       this.$axios.$delete(`/tasks/${id}`);
-      this.$router.push("/tasks");
+      this.$router.push("/");
     },
   },
 };
