@@ -35,6 +35,7 @@
           style="color: white !important;"
           :to="{name: 'tasks-id', params: {id: data.value}}"
         >View</nuxt-link>
+        <b-button @click="deleteTask(data.value)"  variant="danger">Delete</b-button>
       </template>
     </b-table>
   </div>
@@ -67,6 +68,9 @@ export default {
         {
           key: "finished",
           sortable: true,
+          formatter: (value) => {
+            return value ? "✅" : "";
+          },
         },
         {
           key: "id",
@@ -86,6 +90,10 @@ export default {
       if (value) {
         return moment.utc(String(value)).format("dddd, MMMM Do YYYY, hh:mm a");
       }
+    },
+    async deleteTask(id) {
+      this.$axios.$delete(`/tasks/${id}`);
+      this.$router.push("/");
     },
   },
   computed: {
