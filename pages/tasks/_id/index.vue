@@ -32,6 +32,15 @@
     </div>
 
     <div class="row">
+      <div class="col-md-2">
+        <strong>Users assigned:</strong>
+      </div>
+      <div class="col-md">
+        <p></p>
+      </div>
+    </div>
+
+    <div class="row">
       <div class="col-2">
         <strong>Status:</strong>
       </div>
@@ -43,7 +52,10 @@
     <div v-if="authenticated">
       <div class="row justify-content-center" v-if="user.is_admin == true">
         <div class="col-md-2">
-          <b-button block variant="outline-primary">Complete Task</b-button>
+          <b-button block variant="outline-primary">Complete</b-button>
+        </div>
+        <div class="col-md-2">
+          <b-button id="toggle-btn" @click="toggleModal" block variant="outline-info">Assign User</b-button>
         </div>
         <div class="col-md-2">
           <nuxt-link :to="{name: 'tasks-edit', params: {id: task.id}}">
@@ -55,10 +67,12 @@
         </div>
       </div>
     </div>
+    <Assign></Assign>
   </div>
 </template>
 
 <script>
+import Assign from "@/components/Assign";
 import moment from "moment";
 
 export default {
@@ -66,6 +80,9 @@ export default {
     return {
       task: "",
     };
+  },
+  components: {
+    Assign,
   },
   async asyncData({ $axios, params }) {
     const { data } = await $axios.$get(`/tasks/${params.id}`);
@@ -82,6 +99,11 @@ export default {
     async deleteTask(id) {
       this.$axios.$delete(`/tasks/${id}`);
       this.$router.push("/");
+    },
+    toggleModal() {
+      // We pass the ID of the button that we want to return focus to
+      // when the modal has hidden
+      this.$refs["modal-assign"].toggle("#toggle-btn");
     },
   },
 };
