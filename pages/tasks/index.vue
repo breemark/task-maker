@@ -31,11 +31,11 @@
 
       <template v-slot:cell(id)="data">
         <nuxt-link
-          class="btn btn-primary"
+          class="btn btn-primary btn-block"
           style="color: white !important;"
           :to="{name: 'tasks-id', params: {id: data.value}}"
         >View</nuxt-link>
-        <b-button @click="deleteTask(data.value)" variant="danger">Delete</b-button>
+        <b-button block @click="deleteTask(data.value)" variant="danger">Delete</b-button>
       </template>
     </b-table>
   </div>
@@ -51,6 +51,8 @@ export default {
       perPage: 9,
       currentPage: 1,
       tasks: [],
+      projects: [],
+      projects_name: [],
       fields: [
         {
           key: "title",
@@ -64,6 +66,16 @@ export default {
           key: "project_id",
           label: "Project",
           sortable: true,
+          formatter: (value) => {
+            var result = this.projects.filter((obj) => {
+              return obj.id == value;
+            });
+
+            if (!result[0]) {
+              return "";
+            }
+            return result[0].title;
+          },
         },
         {
           key: "finished",
@@ -74,15 +86,20 @@ export default {
         },
         {
           key: "id",
-          label: "",
+          label: "Options",
         },
       ],
     };
   },
   async asyncData({ $axios }) {
-    let { data, links } = await $axios.$get("/tasks");
+    let { data: tasks } = await $axios.$get("/tasks");
+    let { data: projects } = await $axios.$get("/projects");
+
+    // const projects_name = projects.map(a => a.title);
+
     return {
-      tasks: data,
+      tasks,
+      projects,
     };
   },
   methods: {

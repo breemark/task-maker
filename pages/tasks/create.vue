@@ -18,19 +18,24 @@
           ></b-form-textarea>
         </b-form-group>
 
-        <!-- <b-form-group>
-          <b-form-checkbox-group v-model="form.finished">
-            <b-form-checkbox value="true">Task completed</b-form-checkbox>
-          </b-form-checkbox-group>
-        </b-form-group>-->
+        <b-form-group>
+          <b-form-checkbox v-model="form.finished" value="1" unchecked-value>This task is completed</b-form-checkbox>
+        </b-form-group>
 
         <b-form-group label="Deadline:">
           <input class="form-control" type="datetime-local" v-model="form.deadline" />
         </b-form-group>
 
-        <!-- <b-form-group label="Project:">
-          <b-form-select v-model="form.project_id" :options="projects"></b-form-select>
-        </b-form-group>-->
+        <b-form-group label="Project:">
+          <b-form-select
+            v-model="form.project_id"
+            text-field="title"
+            value-field="id"
+            :options="projects"
+          >
+            <option disabled value>Select the Project this Task belongs to</option>
+          </b-form-select>
+        </b-form-group>
 
         <b-button type="submit" variant="primary btn-lg">Submit</b-button>
         <!-- <b-button type="reset" variant="danger btn-lg">Reset</b-button> -->
@@ -47,11 +52,17 @@ export default {
       form: {
         title: "",
         content: "",
-        // finished: [],
+        finished: 0,
         deadline: "",
-        // project_id: null,
+        project_id: "",
       },
-      projects: [{ text: "Select One", value: null }, "1", "2"],
+      projects: [],
+    };
+  },
+  async asyncData({ $axios }) {
+    let { data, links } = await $axios.$get("/projects");
+    return {
+      projects: data,
     };
   },
   methods: {
