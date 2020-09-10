@@ -48,6 +48,9 @@
         <p>{{task.finished ? 'Complete ✔️' : 'Incomplete'}}</p>
       </div>
     </div>
+
+    <Assign />
+
     <hr />
     <div v-if="authenticated">
       <div class="row justify-content-center" v-if="user.is_admin == true">
@@ -55,7 +58,7 @@
           <b-button block variant="outline-primary">Complete</b-button>
         </div>
         <div class="col-md-2">
-          <b-button id="toggle-btn" @click="toggleModal" block variant="outline-info">Assign User</b-button>
+          <b-button v-b-modal.modal-1 variant="outline-info">Assign User</b-button>
         </div>
         <div class="col-md-2">
           <nuxt-link :to="{name: 'tasks-edit', params: {id: task.id}}">
@@ -67,7 +70,6 @@
         </div>
       </div>
     </div>
-    <Assign></Assign>
   </div>
 </template>
 
@@ -99,11 +101,6 @@ export default {
     async deleteTask(id) {
       this.$axios.$delete(`/tasks/${id}`);
       this.$router.push("/");
-    },
-    toggleModal() {
-      // We pass the ID of the button that we want to return focus to
-      // when the modal has hidden
-      this.$refs["modal-assign"].toggle("#toggle-btn");
     },
   },
 };
