@@ -95,8 +95,6 @@ export default {
     let { data: tasks } = await $axios.$get("/tasks");
     let { data: projects } = await $axios.$get("/projects");
 
-    // const projects_name = projects.map(a => a.title);
-
     return {
       tasks,
       projects,

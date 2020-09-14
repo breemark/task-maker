@@ -1,15 +1,23 @@
 <template>
   <div>
     <b-modal id="modal-1" title="Assign User">
-      <p class="my-4">Hello from modal!</p>
-      <b-form @submit.prevent="create">
+      <h5>Current Assigned Users:</h5>
+      <b-list-group>
+        <b-list-group-item
+          v-for="(user_assigned, index) in users_assigned"
+          v-bind:key="index"
+          href="#"
+        >{{user_assigned}}</b-list-group-item>
+      </b-list-group>
+      <br />
+      <b-form @submit.prevent="assignUser">
         <b-form-group label="User:">
-          <b-form-select v-model="user_id" text-field="title" value-field="id" :options="users">
+          <b-form-select v-model="form.user_id" text-field="name" value-field="id" :options="users">
             <option disabled value>Assign this Task to a user</option>
           </b-form-select>
         </b-form-group>
 
-        <b-button type="submit" variant="primary btn-lg">Submit</b-button>
+        <b-button type="submit" variant="primary btn-lg">Assign</b-button>
       </b-form>
     </b-modal>
   </div>
@@ -18,17 +26,28 @@
 <script>
 export default {
   name: "Assign",
+  middleware: ["auth"],
+  props: {
+    task: Number,
+    users_assigned: Array,
+    users: Array,
+  },
+
   data() {
     return {
-      users: [
-        { value: null, text: "Please select an option" },
-        { value: "a", text: "This is First option" },
-        { value: "b", text: "Selected Option" },
-        { value: { C: "3PO" }, text: "This is an option with object value" },
-        { value: "d", text: "This one is disabled", disabled: true },
-      ],
-      user_id: "",
+      form: {
+        user_id: "",
+      },
     };
+  },
+
+  methods: {
+    assignUser() {
+      // Create the relationship Task - User
+      // console.log(this.user_id);
+      this.$axios.$put(`/tasks/${this.task}/assign_task`, this.form);
+      return this.$router.push("/tasks");
+    },
   },
 };
 </script>

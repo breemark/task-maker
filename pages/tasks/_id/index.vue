@@ -16,7 +16,9 @@
     </div>
     <div class="row">
       <div class="col-md-2">
-        <strong>Finish before:</strong>
+        <p>
+          <strong>Finish before:</strong>
+        </p>
       </div>
       <div class="col-md">
         <p>{{format_date(task.deadline)}}</p>
@@ -24,19 +26,30 @@
     </div>
     <div class="row">
       <div class="col-md-2">
-        <strong>Project:</strong>
+        <p>
+          <strong>Project:</strong>
+        </p>
       </div>
       <div class="col-md">
-        <p>{{task.project_id}}</p>
+        <p>{{ getProjectName(task.project_id) }}</p>
       </div>
     </div>
 
     <div class="row">
       <div class="col-md-2">
-        <strong>Users assigned:</strong>
+        <p>
+          <strong>Users assigned:</strong>
+        </p>
       </div>
       <div class="col-md">
-        <p></p>
+        <p>
+          <b-badge
+            class="mr-1"
+            v-for="(user_name, index) in users_assigned_names "
+            v-bind:key="index"
+            variant="primary"
+          >{{ user_name }}</b-badge>
+        </p>
       </div>
     </div>
 
@@ -49,20 +62,23 @@
       </div>
     </div>
 
-    <Assign />
+    <Assign v-bind:task="task.id" v-bind:users="users" v-bind:users_assigned="task.users_id"></Assign>
 
     <hr />
     <div v-if="authenticated">
       <div class="row justify-content-center" v-if="user.is_admin == true">
         <div class="col-md-2">
-          <b-button block variant="outline-primary">Complete</b-button>
+          <b-button
+            block
+            variant="outline-success"
+          >{{!task.finished ? 'Set Complete' : 'Set Incomplete'}}</b-button>
         </div>
         <div class="col-md-2">
-          <b-button v-b-modal.modal-1 variant="outline-info">Assign User</b-button>
+          <b-button block v-b-modal.modal-1 variant="outline-primary">Assign User</b-button>
         </div>
         <div class="col-md-2">
           <nuxt-link :to="{name: 'tasks-edit', params: {id: task.id}}">
-            <b-button block variant="outline-success">Edit Task</b-button>
+            <b-button block variant="outline-info">Edit Task</b-button>
           </nuxt-link>
         </div>
         <div class="col-md-2">
@@ -81,15 +97,23 @@ export default {
   data() {
     return {
       task: "",
+      projects: "",
+      users: "",
+      users_assigned_names: [],
     };
   },
   components: {
     Assign,
   },
   async asyncData({ $axios, params }) {
-    const { data } = await $axios.$get(`/tasks/${params.id}`);
+    let { data: task } = await $axios.$get(`/tasks/${params.id}`);
+    let { data: projects } = await $axios.$get("/projects");
+    let { data: users } = await $axios.$get("/users");
+
     return {
-      task: data,
+      task,
+      projects,
+      users,
     };
   },
   methods: {
@@ -102,6 +126,40 @@ export default {
       this.$axios.$delete(`/tasks/${id}`);
       this.$router.push("/");
     },
+    getProjectName(value) {
+      var result = this.projects.filter((obj) => {
+        return obj.id == value;
+      });
+
+      if (!result[0]) {
+        return "";
+      }
+      return result[0].title;
+    },
+  },
+  computed: {},
+  created() {
+    this.task.users_id.forEach((user_id) => {
+      var result = this.users.filter((obj) => {
+        return obj.id == user_id;
+      });
+
+      if (!result[0]) {
+        return "";
+      }
+      // console.log(this.users_assigned_names);
+      this.users_assigned_names.push(result[0].name);
+    });
+
+    // var result = this.users.filter((user_id) => {
+    //   return obj.id == this.task.id;
+    // });
+
+    // if (!result[0]) {
+    //   return "";
+    // }
+    // console.log(result[0].name);
+    // return result[0].name;
   },
 };
 </script>

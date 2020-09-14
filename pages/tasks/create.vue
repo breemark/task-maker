@@ -37,17 +37,6 @@
           </b-form-select>
         </b-form-group>
 
-        <!-- <b-form-group label="User:">
-          <b-form-select
-            v-model="form.project_id"
-            text-field="title"
-            value-field="id"
-            :options="projects"
-          >
-            <option disabled value>Assign this Task to a user</option>
-          </b-form-select>
-        </b-form-group> -->
-
         <b-button type="submit" variant="primary btn-lg">Submit</b-button>
       </b-form>
     </div>
@@ -71,10 +60,9 @@ export default {
   },
   async asyncData({ $axios }) {
     let { data: projects } = await $axios.$get("/projects");
-    // let { data: users } = await $axios.$get("/users");
+
     return {
       projects,
-      // users
     };
   },
   methods: {
