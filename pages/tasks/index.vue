@@ -81,7 +81,7 @@ export default {
           key: "finished",
           sortable: true,
           formatter: (value) => {
-            return value ? "✅" : "";
+            return value ? "Done ✅" : "";
           },
         },
         {

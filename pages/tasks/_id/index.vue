@@ -58,7 +58,7 @@
         <strong>Status:</strong>
       </div>
       <div class="col-md-2">
-        <p>{{task.finished ? 'Complete ✔️' : 'Incomplete'}}</p>
+        <p>{{task_complete ? 'Complete ✔️' : 'Incomplete'}}</p>
       </div>
     </div>
 
@@ -70,8 +70,9 @@
         <div class="col-md-2">
           <b-button
             block
+            @click="toggleComplete(task.id)"
             variant="outline-success"
-          >{{!task.finished ? 'Set Complete' : 'Set Incomplete'}}</b-button>
+          >{{!task_complete ? 'Set Complete' : 'Set Incomplete'}}</b-button>
         </div>
         <div class="col-md-2">
           <b-button block v-b-modal.modal-1 variant="outline-primary">Assign User</b-button>
@@ -100,6 +101,7 @@ export default {
       projects: "",
       users: "",
       users_assigned_names: [],
+      task_complete: "",
     };
   },
   components: {
@@ -122,6 +124,10 @@ export default {
         return moment.utc(String(value)).format("dddd, MMMM Do YYYY, hh:mm a");
       }
     },
+    async toggleComplete(id) {
+      this.$axios.$put(`/tasks/${id}/complete`);
+      this.task_complete = !this.task_complete;
+    },
     async deleteTask(id) {
       this.$axios.$delete(`/tasks/${id}`);
       this.$router.push("/");
@@ -139,6 +145,8 @@ export default {
   },
   computed: {},
   created() {
+    this.task_complete = this.task.finished;
+
     this.task.users_id.forEach((user_id) => {
       var result = this.users.filter((obj) => {
         return obj.id == user_id;
@@ -147,19 +155,8 @@ export default {
       if (!result[0]) {
         return "";
       }
-      // console.log(this.users_assigned_names);
       this.users_assigned_names.push(result[0].name);
     });
-
-    // var result = this.users.filter((user_id) => {
-    //   return obj.id == this.task.id;
-    // });
-
-    // if (!result[0]) {
-    //   return "";
-    // }
-    // console.log(result[0].name);
-    // return result[0].name;
   },
 };
 </script>
