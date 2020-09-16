@@ -7,7 +7,13 @@
           v-for="(user_assigned, index) in users_assigned"
           v-bind:key="index"
           href="#"
-        >{{user_assigned}}</b-list-group-item>
+        >
+          {{getUserName(user_assigned)}}
+          <button
+            class="btn btn-danger float-right"
+            @click="removeUser(user_assigned)"
+          >Remove</button>
+        </b-list-group-item>
       </b-list-group>
       <br />
       <b-form @submit.prevent="assignUser">
@@ -42,10 +48,22 @@ export default {
   },
 
   methods: {
+    getUserName(value) {
+      var result = this.users.filter((obj) => {
+        return obj.id == value;
+      });
+
+      if (!result[0]) {
+        return "";
+      }
+      return result[0].name;
+    },
     assignUser() {
-      // Create the relationship Task - User
-      // console.log(this.user_id);
-      this.$axios.$put(`/tasks/${this.task}/assign_task`, this.form);
+      this.$axios.$put(`/tasks/${this.task}/assign_user`, this.form);
+      return this.$router.push("/tasks");
+    },
+    removeUser(user_id) {
+      this.$axios.$delete(`/tasks/${this.task}/remove_user/${user_id}`);
       return this.$router.push("/tasks");
     },
   },

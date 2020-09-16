@@ -78,7 +78,7 @@
           <b-button block v-b-modal.modal-1 variant="outline-primary">Assign User</b-button>
         </div>
         <div class="col-md-2">
-          <nuxt-link :to="{name: 'tasks-edit', params: {id: task.id}}">
+          <nuxt-link :to="{name: `tasks-id-edit`, params: {id: task.id}}">
             <b-button block variant="outline-info">Edit Task</b-button>
           </nuxt-link>
         </div>
