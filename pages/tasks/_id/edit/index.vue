@@ -19,17 +19,11 @@
           <small v-if="errors.content" class="form-text text-danger">{{errors.content[0]}}</small>
         </div>
 
-        <div class="form-check">
-          <input type="checkbox" class="form-check-input" v-model="task.finished" />
-          <label class="form-check-label">Task Finished</label>
-          <small v-if="errors.finished" class="form-text text-danger">{{errors.finished[0]}}</small>
-        </div>
-
         <b-form-group label="Deadline:">
           <input class="form-control" type="datetime-local" v-model="task.deadline" />
         </b-form-group>
 
-        <!-- <b-form-group label="Project:">
+        <b-form-group label="Project:">
           <b-form-select
             v-model="task.project_id"
             text-field="title"
@@ -38,7 +32,15 @@
           >
             <option disabled value>Select the Project this Task belongs to</option>
           </b-form-select>
-        </b-form-group> -->
+        </b-form-group>
+
+        <div class="form-check">
+          <input type="checkbox" class="form-check-input" v-model="task.finished" />
+          <label class="form-check-label">Task Finished</label>
+          <small v-if="errors.finished" class="form-text text-danger">{{errors.finished[0]}}</small>
+        </div>
+
+        <hr />
 
         <button class="btn btn-outline-success">Update</button>
       </form>
@@ -50,27 +52,41 @@
 </template>
 
 <script>
+import moment from "moment";
+
 export default {
   data() {
     return {
       task: {
         title: "",
+        content: "",
+        finished: "",
+        deadline: "",
+        project_id: "",
       },
+      projects: [],
     };
   },
   async asyncData({ $axios, params }) {
-    const { data } = await $axios.$get(`/tasks/${params.id}`);
-    return { task: data };
+    let { data: task } = await $axios.$get(`/tasks/${params.id}`);
+    let { data: projects } = await $axios.$get("/projects");
+
+    return { task, projects };
   },
   methods: {
     async update() {
       //
-      await this.$axios.patch(`/tasks/${this.$route.params.id}`, {
-        title: this.task.title,
-      });
+      await this.$axios.patch(`/tasks/${this.$route.params.id}`, this.task);
       // Redirect
       this.$router.push("/tasks");
     },
+  },
+  created() {
+    if (this.task.deadline) {
+      this.task.deadline = moment
+        .utc(String(this.task.deadline))
+        .format("YYYY-MM-DDTHH:mm");
+    }
   },
 };
 </script>
