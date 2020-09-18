@@ -52,6 +52,8 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 import moment from "moment";
 
 export default {
@@ -69,14 +71,19 @@ export default {
   },
   async asyncData({ $axios, params }) {
     let { data: task } = await $axios.$get(`/tasks/${params.id}`);
+
     let { data: projects } = await $axios.$get("/projects");
 
     return { task, projects };
   },
   methods: {
+    ...mapActions("tasks", ["editTaskAction"]),
+
     async update() {
       //
-      await this.$axios.patch(`/tasks/${this.$route.params.id}`, this.task);
+      await this.editTaskAction(this.task);
+
+      // await this.$axios.patch(`/tasks/${this.$route.params.id}`, this.task);
       // Redirect
       this.$router.push("/tasks");
     },

@@ -31,11 +31,16 @@
 
       <template v-slot:cell(id)="data">
         <nuxt-link
-          class="btn btn-primary btn-block"
+          class="btn btn-outline-primary "
           style="color: white !important;"
           :to="{name: 'tasks-id', params: {id: data.value}}"
-        >View</nuxt-link>
-        <b-button block @click="deleteTask(data.value)" variant="danger">Delete</b-button>
+        >👁️</nuxt-link>
+        <nuxt-link
+          class="btn btn-outline-success "
+          style="color: white !important;"
+          :to="{name: 'tasks-id-edit', params: {id: data.value}}"
+        >✏️</nuxt-link>
+        <b-button  @click="deleteTask(data.value)" variant="outline-danger">🗑</b-button>
       </template>
     </b-table>
   </div>
