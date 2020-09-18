@@ -5,7 +5,10 @@
         <h1 class="title">👥 Users</h1>
       </div>
       <div class="col">
-        <nuxt-link class="btn btn-lg btn-outline-success float-right" to="/users/create">Register User</nuxt-link>
+        <nuxt-link
+          class="btn btn-lg btn-outline-success float-right"
+          to="/users/create"
+        >Register User</nuxt-link>
       </div>
     </div>
     <hr />
@@ -16,9 +19,9 @@
       class="bg-light mt-5 mb-5"
       style="padding:20px; border-radius:25px;"
     >
-      <h2>👤 {{user.name}}   </h2>
+      <h2>👤 {{user.name}}</h2>
       <h5>📧 {{user.email}}</h5>
-      <p>{{user.is_admin}}</p>
+      <p>{{user.is_admin ? 'Administrator ⭐': ''}}</p>
     </div>
   </div>
 </template>

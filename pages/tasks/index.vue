@@ -42,6 +42,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 
 export default {
@@ -50,7 +51,6 @@ export default {
     return {
       perPage: 9,
       currentPage: 1,
-      tasks: [],
       projects: [],
       projects_name: [],
       fields: [
@@ -92,26 +92,27 @@ export default {
     };
   },
   async asyncData({ $axios }) {
-    let { data: tasks } = await $axios.$get("/tasks");
     let { data: projects } = await $axios.$get("/projects");
 
     return {
-      tasks,
       projects,
     };
   },
   methods: {
+    ...mapActions("tasks", ["deleteTaskAction"]),
+
     format_date(value) {
       if (value) {
         return moment.utc(String(value)).format("dddd, MMMM Do YYYY, hh:mm a");
       }
     },
     async deleteTask(id) {
-      this.$axios.$delete(`/tasks/${id}`);
-      this.$router.push("/");
+      this.deleteTaskAction(id);
     },
   },
   computed: {
+    ...mapGetters("tasks", ["tasks"]),
+
     rows() {
       return this.tasks.length;
     },

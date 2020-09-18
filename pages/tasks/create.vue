@@ -44,6 +44,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   middleware: ["auth"],
   data() {
@@ -66,8 +68,9 @@ export default {
     };
   },
   methods: {
-    async create() {
-      await this.$axios.$post("/tasks", this.form);
+    ...mapActions("tasks", ["addTaskAction"]),
+    create() {
+      this.addTaskAction(this.form);
       return this.$router.push("/tasks");
     },
   },
