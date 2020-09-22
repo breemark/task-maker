@@ -1,12 +1,12 @@
 <template>
-  <div class="container">
+  <div class="container" v-if="task">
     <div class="row">
       <div class="col">
         <h2 class="display-3">{{task.title}}</h2>
         <hr />
       </div>
     </div>
-    <div class="row">
+    <div class="row" v-if="task.content">
       <div class="col-md-2">
         <strong>Task description:</strong>
       </div>
@@ -14,7 +14,7 @@
         <p>{{task.content}}</p>
       </div>
     </div>
-    <div class="row">
+    <div class="row" v-if="task.deadline">
       <div class="col-md-2">
         <p>
           <strong>Finish before:</strong>
@@ -24,18 +24,18 @@
         <p>{{format_date(task.deadline)}}</p>
       </div>
     </div>
-    <div class="row">
+    <div class="row" v-if="task.project">
       <div class="col-md-2">
         <p>
           <strong>Project:</strong>
         </p>
       </div>
       <div class="col-md">
-        <p>{{ getProjectName(task.project_id) }}</p>
+        <p>{{task.project.title }}</p>
       </div>
     </div>
 
-    <div class="row">
+    <div class="row" v-if="task.users_assigned[0]">
       <div class="col-md-2">
         <p>
           <strong>Users assigned:</strong>
@@ -45,10 +45,10 @@
         <p>
           <b-badge
             class="mr-1"
-            v-for="(user_name, index) in users_assigned_names "
+            v-for="(user_assigned, index) in task.users_assigned"
             v-bind:key="index"
             variant="primary"
-          >{{ user_name }}</b-badge>
+          >{{ user_assigned.name }}</b-badge>
         </p>
       </div>
     </div>
@@ -58,11 +58,11 @@
         <strong>Status:</strong>
       </div>
       <div class="col-md-2">
-        <p>{{task_complete ? 'Complete ✔️' : 'Incomplete'}}</p>
+        <p>{{task_finished ? 'Complete ✔️' : 'Incomplete'}}</p>
       </div>
     </div>
 
-    <Assign v-bind:task="task.id" v-bind:users="users" v-bind:users_assigned="task.users_id"></Assign>
+    <Assign v-bind:task_id="task.id"></Assign>
 
     <hr />
     <div v-if="authenticated">
@@ -70,9 +70,9 @@
         <div class="col-md-2">
           <b-button
             block
-            @click="toggleComplete(task.id)"
+            @click="completeTask(task.id)"
             variant="outline-success"
-          >{{!task_complete ? 'Set Complete' : 'Set Incomplete'}}</b-button>
+          >{{!task_finished ? 'Set Complete' : 'Set Incomplete'}}</b-button>
         </div>
         <div class="col-md-2">
           <b-button block v-b-modal.modal-1 variant="outline-primary">Assign User</b-button>
@@ -85,6 +85,11 @@
         <div class="col-md-2">
           <b-button @click="deleteTask(task.id)" block variant="outline-danger">Delete Task</b-button>
         </div>
+        <div class="col-md-2">
+          <nuxt-link to="/tasks">
+            <b-button block variant="outline-dark">Back to Tasks</b-button>
+          </nuxt-link>
+        </div>
       </div>
     </div>
   </div>
@@ -93,71 +98,67 @@
 <script>
 import Assign from "@/components/Assign";
 import moment from "moment";
+import { mapGetters, mapActions } from "vuex";
 
 export default {
   data() {
     return {
-      task: "",
       projects: "",
       users: "",
-      users_assigned_names: [],
-      task_complete: "",
+      task_finished: "",
     };
   },
   components: {
     Assign,
   },
-  async asyncData({ $axios, params }) {
-    let { data: task } = await $axios.$get(`/tasks/${params.id}`);
+  async asyncData({ $axios, params, store }) {
     let { data: projects } = await $axios.$get("/projects");
     let { data: users } = await $axios.$get("/users");
 
     return {
-      task,
       projects,
       users,
     };
   },
   methods: {
+    ...mapActions("tasks", [
+      "setTasksAction",
+      "deleteTaskAction",
+      "completeTaskAction",
+    ]),
+
     format_date(value) {
       if (value) {
         return moment.utc(String(value)).format("dddd, MMMM Do YYYY, hh:mm a");
       }
     },
-    async toggleComplete(id) {
-      this.$axios.$put(`/tasks/${id}/complete`);
-      this.task_complete = !this.task_complete;
-    },
+
     async deleteTask(id) {
-      this.$axios.$delete(`/tasks/${id}`);
-      this.$router.push("/");
+      this.deleteTaskAction(id);
+      this.$router.push(`/tasks/`);
     },
-    getProjectName(value) {
-      var result = this.projects.filter((obj) => {
-        return obj.id == value;
-      });
+    async completeTask(id) {
+      this.completeTaskAction(id);
 
-      if (!result[0]) {
-        return "";
-      }
-      return result[0].title;
+      this.task_finished = !this.task_finished;
     },
   },
-  computed: {},
-  created() {
-    this.task_complete = this.task.finished;
+  computed: {
+    ...mapGetters("tasks", ["getTaskById"]),
 
-    this.task.users_id.forEach((user_id) => {
-      var result = this.users.filter((obj) => {
-        return obj.id == user_id;
-      });
-
-      if (!result[0]) {
-        return "";
-      }
-      this.users_assigned_names.push(result[0].name);
-    });
+    task() {
+      return this.getTaskById(this.$route.params.id);
+    },
   },
+  async created() {
+    if (this.task) {
+      this.task_finished = this.task.finished;
+    }
+  },
+
+  async fetch() {},
+  async beforeMount() {},
+  async mounted() {},
 };
 </script>
 

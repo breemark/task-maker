@@ -1,18 +1,24 @@
+
 export const state = () => ({
-    tasks: []
+    tasks: [],
 })
 
 export const getters = {
-    tasks(state) {
+    tasks: (state) => {
         return state.tasks;
     },
-    taskById: (state) => (id) => state.tasks.find((task) => task.id == id),
+    getTaskById: (state) => (id) => {
+        return state.tasks.find(task => task.id == id)
+    },
+
+
 }
 
 export const mutations = {
     setTasks(state, tasks) {
         state.tasks = tasks;
     },
+
 }
 
 export const actions = {
@@ -30,5 +36,20 @@ export const actions = {
     async editTaskAction(context, task) {
         await this.$axios.patch(`/tasks/${task.id}`, task);
         context.commit("setTasks", (await this.$axios.$get("/tasks")).data);
+    },
+    async completeTaskAction(context, id) {
+        await this.$axios.$put(`/tasks/${id}/complete`);
+        context.commit("setTasks", (await this.$axios.$get("/tasks")).data);
+    },
+
+    // Users assigned to Tasks
+    async assignUserAction(context, payload) {
+        await this.$axios.$put(`/tasks/${payload.task}/assign_user`, payload.user_id);
+        context.commit("setTasks", (await this.$axios.$get("/tasks")).data);
+    },
+    async removeUserAction(context, payload) {
+        await this.$axios.$delete(`/tasks/${payload.task}/remove_user/${payload.user_id}`);
+        context.commit("setTasks", (await this.$axios.$get("/tasks")).data);
     }
+
 }

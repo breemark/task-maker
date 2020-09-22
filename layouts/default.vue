@@ -17,9 +17,14 @@ export default {
   },
   methods: {
     ...mapActions(["tasks/setTasksAction"]),
+    ...mapActions(["users/setUsersAction"]),
   },
   async created() {
     this["tasks/setTasksAction"]();
+    this["users/setUsersAction"]();
   },
+  // mounted() {
+  //   this.init();
+  // },
 };
 </script>

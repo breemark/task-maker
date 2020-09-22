@@ -2,16 +2,16 @@
   <div>
     <b-modal id="modal-1" title="Assign User">
       <h5>Current Assigned Users:</h5>
-      <b-list-group>
+      <b-list-group v-if="task">
         <b-list-group-item
-          v-for="(user_assigned, index) in users_assigned"
+          v-for="(user_assigned, index) in task.users_assigned"
           v-bind:key="index"
           href="#"
         >
-          {{getUserName(user_assigned)}}
+          {{user_assigned.name}}
           <button
             class="btn btn-danger float-right"
-            @click="removeUser(user_assigned)"
+            @click="removeUser(user_assigned.id)"
           >Remove</button>
         </b-list-group-item>
       </b-list-group>
@@ -30,13 +30,13 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   name: "Assign",
   middleware: ["auth"],
   props: {
-    task: Number,
-    users_assigned: Array,
-    users: Array,
+    task_id: Number,
   },
 
   data() {
@@ -48,23 +48,28 @@ export default {
   },
 
   methods: {
-    getUserName(value) {
-      var result = this.users.filter((obj) => {
-        return obj.id == value;
-      });
+    ...mapActions("tasks", [
+      "setTasksAction",
+      "assignUserAction",
+      "removeUserAction",
+    ]),
 
-      if (!result[0]) {
-        return "";
-      }
-      return result[0].name;
+    async assignUser() {
+      this.assignUserAction({ user_id: this.form, task: this.task_id });
     },
-    assignUser() {
-      this.$axios.$put(`/tasks/${this.task}/assign_user`, this.form);
-      return this.$router.push("/tasks");
+    async removeUser(user) {
+      this.removeUserAction({ user_id: user, task: this.task_id });
     },
-    removeUser(user_id) {
-      this.$axios.$delete(`/tasks/${this.task}/remove_user/${user_id}`);
-      return this.$router.push("/tasks");
+  },
+  async mounted() {
+    await this.setTasksAction();
+  },
+  computed: {
+    ...mapGetters("tasks", ["getTaskById"]),
+    ...mapGetters("users", ["users"]),
+
+    task() {
+      return this.getTaskById(this.task_id);
     },
   },
 };

@@ -31,16 +31,17 @@
 
       <template v-slot:cell(id)="data">
         <nuxt-link
-          class="btn btn-outline-primary "
+          class="btn m-1 btn-outline-info"
           style="color: white !important;"
           :to="{name: 'tasks-id', params: {id: data.value}}"
         >👁️</nuxt-link>
         <nuxt-link
-          class="btn btn-outline-success "
+          class="btn m-1 btn-outline-success"
           style="color: white !important;"
           :to="{name: 'tasks-id-edit', params: {id: data.value}}"
         >✏️</nuxt-link>
-        <b-button  @click="deleteTask(data.value)" variant="outline-danger">🗑</b-button>
+        <b-button class="m-1" @click="completeTask(data.value)" variant="outline-primary">✓</b-button>
+        <b-button class="m-1" @click="deleteTask(data.value)" variant="outline-danger">🗑</b-button>
       </template>
     </b-table>
   </div>
@@ -68,18 +69,14 @@ export default {
           sortable: true,
         },
         {
-          key: "project_id",
+          key: "project",
           label: "Project",
           sortable: true,
           formatter: (value) => {
-            var result = this.projects.filter((obj) => {
-              return obj.id == value;
-            });
-
-            if (!result[0]) {
-              return "";
+            if (value) {
+              return value.title;
             }
-            return result[0].title;
+            return "";
           },
         },
         {
@@ -96,15 +93,8 @@ export default {
       ],
     };
   },
-  async asyncData({ $axios }) {
-    let { data: projects } = await $axios.$get("/projects");
-
-    return {
-      projects,
-    };
-  },
   methods: {
-    ...mapActions("tasks", ["deleteTaskAction"]),
+    ...mapActions("tasks", ["deleteTaskAction", "completeTaskAction"]),
 
     format_date(value) {
       if (value) {
@@ -113,6 +103,9 @@ export default {
     },
     async deleteTask(id) {
       this.deleteTaskAction(id);
+    },
+    async completeTask(id) {
+      this.completeTaskAction(id);
     },
   },
   computed: {

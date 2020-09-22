@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="row">
-      <h2>Edit Task: {{task.title}}</h2>
+      <h2 v-once>Edit Task: {{task.title}}</h2>
     </div>
     <div>
       <form @submit.prevent="update">
@@ -71,7 +71,6 @@ export default {
   },
   async asyncData({ $axios, params }) {
     let { data: task } = await $axios.$get(`/tasks/${params.id}`);
-
     let { data: projects } = await $axios.$get("/projects");
 
     return { task, projects };
@@ -80,20 +79,22 @@ export default {
     ...mapActions("tasks", ["editTaskAction"]),
 
     async update() {
-      //
       await this.editTaskAction(this.task);
 
-      // await this.$axios.patch(`/tasks/${this.$route.params.id}`, this.task);
-      // Redirect
-      this.$router.push("/tasks");
+      this.$router.push(`/tasks/${this.$route.params.id}`);
     },
   },
+  computed: {},
   created() {
     if (this.task.deadline) {
       this.task.deadline = moment
         .utc(String(this.task.deadline))
         .format("YYYY-MM-DDTHH:mm");
     }
+    if (this.task.project) {
+      this.task.project_id = this.task.project.id;
+    }
   },
+  mounted() {},
 };
 </script>
