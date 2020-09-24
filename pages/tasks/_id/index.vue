@@ -138,9 +138,12 @@ export default {
       this.$router.push(`/tasks/`);
     },
     async completeTask(id) {
-      this.completeTaskAction(id);
-
-      this.task_finished = !this.task_finished;
+      try {
+        this.completeTaskAction(id);
+        this.task_finished = !this.task_finished;
+      } catch (err) {
+        console.error(err.message);
+      }
     },
   },
   computed: {

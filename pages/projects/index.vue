@@ -11,37 +11,82 @@
         >Register Project</nuxt-link>
       </div>
     </div>
-    <hr />
 
-    <div
-      v-for="(project, index) in projects"
-      :key="index"
-      class="bg-light mt-5 mb-5"
-      style="padding:20px; border-radius:25px;"
-    >
-      <h2>📁 {{project.title}}</h2>
-      <p>{{project.content}}</p>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="rows"
+      :per-page="perPage"
+      aria-controls="projects-table"
+    ></b-pagination>
+
+    <div class="row">
+      <div class="col">
+        <p class="mt-3">Current Page: {{ currentPage }}</p>
+      </div>
+      <div class="col">
+        <p class="mt-3 float-right">Total Projects: {{ projects.length }}</p>
+      </div>
     </div>
+
+    <b-table
+      id="projects-table"
+      striped
+      hover
+      :items="projects"
+      :fields="fields"
+      :per-page="perPage"
+      :current-page="currentPage"
+      responsive
+    >
+      <template v-slot:cell(deadline)="data">{{ format_date(data.value) }}</template>
+
+      <template v-slot:cell(id)="data">
+        <nuxt-link
+          class="btn btn-block m-1 btn-outline-info"
+          style="color: white !important;"
+          :to="{name: 'projects-id', params: {id: data.value}}"
+        >👁️</nuxt-link>
+        <nuxt-link
+          class="btn btn-block m-1 btn-outline-success"
+          style="color: white !important;"
+          :to="{name: 'projects-id-edit', params: {id: data.value}}"
+        >✏️</nuxt-link>
+        <b-button block class="m-1" @click="deleteTask(data.value)" variant="outline-danger">🗑</b-button>
+      </template>
+    </b-table>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapActions } from "vuex";
+
 export default {
   middleware: ["auth"],
   data() {
     return {
-      projects: [],
+      perPage: 9,
+      currentPage: 1,
+      fields: [
+        {
+          key: "title",
+          sortable: true,
+        },
+        {
+          key: "content",
+        },
+        {
+          key: "id",
+          label: "Operations",
+        },
+      ],
     };
   },
-  async asyncData({ $axios }) {
-    let { data } = await $axios.$get("/projects");
-    // console.log(data);
-    return {
-      projects: data,
-    };
+  computed: {
+    ...mapGetters("projects", ["projects"]),
+
+    rows() {
+      return this.projects.length;
+    },
   },
 };
 </script>
-
-<style>
-</style>

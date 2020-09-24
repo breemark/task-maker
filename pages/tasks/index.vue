@@ -15,8 +15,16 @@
       :per-page="perPage"
       aria-controls="tasks-table"
     ></b-pagination>
+    
+    <div class="row">
+      <div class="col">
+        <p class="mt-3">Current Page: {{ currentPage }}</p>
+      </div>
+      <div class="col">
+        <p class="mt-3 float-right">Total Tasks: {{ tasks.length }}</p>
+      </div>
+    </div>
 
-    <p class="mt-3">Current Page: {{ currentPage }}</p>
     <b-table
       id="tasks-table"
       striped
@@ -31,17 +39,17 @@
 
       <template v-slot:cell(id)="data">
         <nuxt-link
-          class="btn m-1 btn-outline-info"
+          class="btn btn-block m-1 btn-outline-info"
           style="color: white !important;"
           :to="{name: 'tasks-id', params: {id: data.value}}"
         >👁️</nuxt-link>
         <nuxt-link
-          class="btn m-1 btn-outline-success"
+          class="btn btn-block m-1 btn-outline-success"
           style="color: white !important;"
           :to="{name: 'tasks-id-edit', params: {id: data.value}}"
         >✏️</nuxt-link>
-        <b-button class="m-1" @click="completeTask(data.value)" variant="outline-primary">✓</b-button>
-        <b-button class="m-1" @click="deleteTask(data.value)" variant="outline-danger">🗑</b-button>
+        <b-button block class="m-1" @click="completeTask(data.value)" variant="outline-primary">✓</b-button>
+        <b-button block class="m-1" @click="deleteTask(data.value)" variant="outline-danger">🗑</b-button>
       </template>
     </b-table>
   </div>
@@ -57,8 +65,6 @@ export default {
     return {
       perPage: 9,
       currentPage: 1,
-      projects: [],
-      projects_name: [],
       fields: [
         {
           key: "title",
@@ -88,7 +94,7 @@ export default {
         },
         {
           key: "id",
-          label: "Options",
+          label: "Operations",
         },
       ],
     };
