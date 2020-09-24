@@ -11,7 +11,6 @@
         >Register User</nuxt-link>
       </div>
     </div>
-    <hr />
 
     <b-pagination
       v-model="currentPage"
