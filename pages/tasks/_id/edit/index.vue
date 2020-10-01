@@ -95,6 +95,5 @@ export default {
       this.task.project_id = this.task.project.id;
     }
   },
-  mounted() {},
 };
 </script>

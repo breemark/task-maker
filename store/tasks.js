@@ -10,8 +10,18 @@ export const getters = {
     getTaskById: (state) => (id) => {
         return state.tasks.find(task => task.id == id)
     },
-    getTasksByProject: (state) => (project) => {
-        return state.tasks.filter(task => task.project.id == project)
+    getTasksByProject: (state) => (project_id) => {
+
+        let tasksProject = [];
+        state.tasks.forEach(element => {
+            if (element.project && element.project.id == project_id) {
+                tasksProject.push(element);
+            }
+        });
+        return tasksProject;
+
+        // return state.tasks.filter(task => task.project.id == project_id)
+
     },
 
 }

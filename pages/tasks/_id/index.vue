@@ -2,7 +2,7 @@
   <div class="container" v-if="task">
     <div class="row">
       <div class="col">
-        <h2 class="display-3">{{task.title}}</h2>
+        <h2 class="display-4">{{ task.title }}</h2>
         <hr />
       </div>
     </div>
@@ -11,7 +11,7 @@
         <strong>Task description:</strong>
       </div>
       <div class="col-md">
-        <p>{{task.content}}</p>
+        <p>{{ task.content }}</p>
       </div>
     </div>
     <div class="row" v-if="task.deadline">
@@ -21,7 +21,7 @@
         </p>
       </div>
       <div class="col-md">
-        <p>{{format_date(task.deadline)}}</p>
+        <p>{{ format_date(task.deadline) }}</p>
       </div>
     </div>
     <div class="row" v-if="task.project">
@@ -31,7 +31,7 @@
         </p>
       </div>
       <div class="col-md">
-        <p>{{task.project.title }}</p>
+        <p>{{ task.project.title }}</p>
       </div>
     </div>
 
@@ -48,7 +48,8 @@
             v-for="(user_assigned, index) in task.users_assigned"
             v-bind:key="index"
             variant="primary"
-          >{{ user_assigned.name }}</b-badge>
+            >{{ user_assigned.name }}</b-badge
+          >
         </p>
       </div>
     </div>
@@ -58,7 +59,7 @@
         <strong>Status:</strong>
       </div>
       <div class="col-md-2">
-        <p>{{task_finished ? 'Complete ✔️' : 'Incomplete'}}</p>
+        <p>{{ task_finished ? "Complete ✔️" : "Incomplete" }}</p>
       </div>
     </div>
 
@@ -72,18 +73,23 @@
             block
             @click="completeTask(task.id)"
             variant="outline-success"
-          >{{!task_finished ? 'Set Complete' : 'Set Incomplete'}}</b-button>
+            >{{ !task_finished ? "Set Complete" : "Set Incomplete" }}</b-button
+          >
         </div>
         <div class="col-md-2">
-          <b-button block v-b-modal.modal-1 variant="outline-primary">Assign User</b-button>
+          <b-button block v-b-modal.modal-1 variant="outline-primary"
+            >Assign User</b-button
+          >
         </div>
         <div class="col-md-2">
-          <nuxt-link :to="{name: `tasks-id-edit`, params: {id: task.id}}">
+          <nuxt-link :to="{ name: `tasks-id-edit`, params: { id: task.id } }">
             <b-button block variant="outline-info">Edit Task</b-button>
           </nuxt-link>
         </div>
         <div class="col-md-2">
-          <b-button @click="deleteTask(task.id)" block variant="outline-danger">Delete Task</b-button>
+          <b-button @click="deleteTask(task.id)" block variant="outline-danger"
+            >Delete Task</b-button
+          >
         </div>
         <div class="col-md-2">
           <nuxt-link to="/tasks">
@@ -158,10 +164,6 @@ export default {
       this.task_finished = this.task.finished;
     }
   },
-
-  async fetch() {},
-  async beforeMount() {},
-  async mounted() {},
 };
 </script>
 

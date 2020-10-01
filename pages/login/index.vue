@@ -5,26 +5,43 @@
     </div>
     <br />
     <b-form @submit.prevent="login">
-      <b-form-group description="We'll never share your email with anyone else.">
-        <b-form-input type="email" required placeholder="Email" v-model.trim="form.email"></b-form-input>
-        <small class="form-text text-danger" v-if="errors.email">{{errors.email[0]}}</small>
+      <b-form-group
+        description="We'll never share your email with anyone else."
+      >
+        <b-form-input
+          type="email"
+          required
+          placeholder="Email"
+          v-model.trim="form.email"
+        ></b-form-input>
+        <small class="form-text text-danger" v-if="errors.email">{{
+          errors.email[0]
+        }}</small>
       </b-form-group>
-      
+
       <b-form-group>
-        <b-form-input type="password" required placeholder="Password" v-model="form.password"></b-form-input>
+        <b-form-input
+          type="password"
+          required
+          placeholder="Password"
+          v-model="form.password"
+        ></b-form-input>
       </b-form-group>
 
       <b-button type="submit" variant="primary">Login</b-button>
     </b-form>
 
     <div class="row justify-content-center" style="margin-top: 20px">
-      <p>Don't have an account?</p>&nbsp;
+      <p>Don't have an account?</p>
+      &nbsp;
       <nuxt-link to="/register">Register</nuxt-link>
     </div>
   </div>
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   middleware: ["guest"],
   data() {
@@ -36,6 +53,9 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["tasks/setTasksAction"]),
+    ...mapActions(["projects/setProjectsAction"]),
+    ...mapActions(["users/setUsersAction"]),
     login() {
       this.$auth
         .loginWith("local", {
@@ -45,8 +65,11 @@ export default {
           },
         })
         .then((data) => {
-          console.log(data);
           this.$router.push("/me");
+
+          this["tasks/setTasksAction"]();
+          this["projects/setProjectsAction"]();
+          this["users/setUsersAction"]();
         })
         .catch((err) => {
           console.log(err);

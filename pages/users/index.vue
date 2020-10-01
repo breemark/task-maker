@@ -65,7 +65,7 @@ export default {
   middleware: ["auth"],
   data() {
     return {
-      perPage: 7,
+      perPage: 5,
       currentPage: 1,
       fields: [
         {

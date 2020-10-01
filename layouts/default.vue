@@ -21,9 +21,11 @@ export default {
     ...mapActions(["users/setUsersAction"]),
   },
   async created() {
-    this["tasks/setTasksAction"]();
-    this["projects/setProjectsAction"]();
-    this["users/setUsersAction"]();
+    if (this.authenticated) {
+      this["tasks/setTasksAction"]();
+      this["projects/setProjectsAction"]();
+      this["users/setUsersAction"]();
+    }
   },
 };
 </script>

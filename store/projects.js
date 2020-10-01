@@ -21,4 +21,13 @@ export const actions = {
     async setProjectsAction(context) {
         context.commit("setProjects", (await this.$axios.$get("/projects")).data)
     },
+    // CRUD
+    async addProjectAction(context, project) {
+        await this.$axios.$post("/projects", project);
+        context.commit("setProjects", (await this.$axios.$get("/projects")).data);
+    },
+    async editProjectAction(context, project) {
+        await this.$axios.patch(`/projects/${project.id}`, project);
+        context.commit("setProjects", (await this.$axios.$get("/projects")).data);
+    },
 }
