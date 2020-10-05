@@ -57,6 +57,7 @@
           >✏️</nuxt-link
         >
         <b-button
+          v-if="user.id != data.value"
           block
           class="m-1"
           @click="deleteUser(data.value)"
@@ -95,7 +96,7 @@ export default {
             if (value == true || value == 1) {
               return "Administrator 🔑";
             }
-            return "User";
+            return "User 👤";
           },
         },
         {

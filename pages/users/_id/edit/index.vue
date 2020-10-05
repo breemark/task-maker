@@ -1,7 +1,7 @@
 <template>
-  <div class="container" v-if="userClone && user">
+  <div class="container" v-if="userClone && employee">
     <div class="row">
-      <h2>Edit User: {{ user.name }}</h2>
+      <h2>Edit User: {{ employee.name }}</h2>
     </div>
     <div>
       <form @submit.prevent="update">
@@ -52,9 +52,9 @@ import moment from "moment";
 export default {
   data() {
     return {
-      userClone: this.user
+      userClone: this.employee
         ? {
-            ...this.user,
+            ...this.employee,
           }
         : {
             name: "",
@@ -69,25 +69,25 @@ export default {
     async update() {
       await this.editUserAction(this.userClone);
 
-      this.$router.push(`/users/${this.user.id}`);
+      this.$router.push(`/users/${this.employee.id}`);
     },
   },
   computed: {
     ...mapGetters("users", ["getUserById"]),
 
-    user() {
+    employee() {
       return this.getUserById(this.$route.params.id);
     },
   },
   watch: {
-    user: function () {
-      this.userClone = { ...this.user };
+    employee: function () {
+      this.userClone = { ...this.employee };
     },
   },
   created() {
-    this.userClone = this.user
+    this.userClone = this.employee
       ? {
-          ...this.user,
+          ...this.employee,
         }
       : {
           name: "",
@@ -95,6 +95,5 @@ export default {
           is_admin: "",
         };
   },
-  mounted() {},
 };
 </script>
