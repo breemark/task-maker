@@ -8,7 +8,8 @@
         <nuxt-link
           class="btn btn-lg btn-outline-success float-right"
           to="/users/create"
-        >Register User</nuxt-link>
+          >Register User</nuxt-link
+        >
       </div>
     </div>
 
@@ -38,20 +39,30 @@
       :current-page="currentPage"
       responsive
     >
-      <template v-slot:cell(created_at)="data">{{ format_date(data.value) }}</template>
+      <template v-slot:cell(created_at)="data">{{
+        format_date(data.value)
+      }}</template>
 
       <template v-slot:cell(id)="data">
         <nuxt-link
           class="btn btn-block m-1 btn-outline-info"
-          style="color: white !important;"
-          :to="{name: 'projects-id', params: {id: data.value}}"
-        >👁️</nuxt-link>
+          style="color: white !important"
+          :to="{ name: 'users-id', params: { id: data.value } }"
+          >👁️</nuxt-link
+        >
         <nuxt-link
           class="btn btn-block m-1 btn-outline-success"
-          style="color: white !important;"
-          :to="{name: 'projects-id-edit', params: {id: data.value}}"
-        >✏️</nuxt-link>
-        <b-button block class="m-1" @click="deleteTask(data.value)" variant="outline-danger">🗑</b-button>
+          style="color: white !important"
+          :to="{ name: 'users-id-edit', params: { id: data.value } }"
+          >✏️</nuxt-link
+        >
+        <b-button
+          block
+          class="m-1"
+          @click="deleteUser(data.value)"
+          variant="outline-danger"
+          >🗑</b-button
+        >
       </template>
     </b-table>
   </div>
@@ -100,10 +111,14 @@ export default {
     };
   },
   methods: {
+    ...mapActions("users", ["deleteUserAction"]),
     format_date(value) {
       if (value) {
         return moment.utc(String(value)).format("dddd, MMMM Do YYYY, hh:mm a");
       }
+    },
+    async deleteUser(id) {
+      this.deleteUserAction(id);
     },
   },
   computed: {

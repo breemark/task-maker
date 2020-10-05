@@ -18,7 +18,8 @@
       <div class="col-md">
         <p>
           This project has
-          <strong> {{ tasks.length == 0 ? "no" : tasks.length }} </strong> tasks
+          <strong> {{ tasks.length == 0 ? "no" : tasks.length }} </strong>
+          {{ tasks.length == 1 ? "task" : "tasks" }}
           assigned
         </p>
       </div>

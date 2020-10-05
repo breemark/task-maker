@@ -31,7 +31,11 @@
         </p>
       </div>
       <div class="col-md">
-        <p>{{ task.project.title }}</p>
+        <nuxt-link
+          :to="{ name: 'projects-id', params: { id: task.project.id } }"
+        >
+          <p>{{ task.project.title }}</p>
+        </nuxt-link>
       </div>
     </div>
 

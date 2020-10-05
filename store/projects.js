@@ -30,4 +30,10 @@ export const actions = {
         await this.$axios.patch(`/projects/${project.id}`, project);
         context.commit("setProjects", (await this.$axios.$get("/projects")).data);
     },
+    async deleteProjectAction(context, project) {
+        await this.$axios.$delete(`/projects/${project}`);
+        context.commit("setProjects", (await this.$axios.$get("/projects")).data);
+        context.commit("tasks/setTasks", (await this.$axios.$get("/tasks")).data, {root: true});
+
+    },
 }

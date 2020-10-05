@@ -7,7 +7,11 @@
     <div>
       <b-form @submit.prevent="create">
         <b-form-group label="Title:">
-          <b-form-input v-model="form.title" required placeholder="Enter project title"></b-form-input>
+          <b-form-input
+            v-model="form.title"
+            required
+            placeholder="Enter project title"
+          ></b-form-input>
         </b-form-group>
         <b-form-group label="Description:">
           <b-form-textarea
@@ -25,6 +29,8 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
+
 export default {
   middleware: ["auth"],
   data() {
@@ -32,12 +38,14 @@ export default {
       form: {
         title: "",
         content: "",
-      }
+      },
     };
   },
   methods: {
+    ...mapActions("projects", ["addProjectAction"]),
+
     async create() {
-      await this.$axios.$post("/projects", this.form);
+      this.addProjectAction(this.form);
       return this.$router.push("/projects");
     },
   },

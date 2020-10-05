@@ -8,7 +8,8 @@
         <nuxt-link
           class="btn btn-lg btn-outline-success float-right"
           to="/projects/create"
-        >Register Project</nuxt-link>
+          >Register Project</nuxt-link
+        >
       </div>
     </div>
 
@@ -38,20 +39,30 @@
       :current-page="currentPage"
       responsive
     >
-      <template v-slot:cell(deadline)="data">{{ format_date(data.value) }}</template>
+      <template v-slot:cell(deadline)="data">{{
+        format_date(data.value)
+      }}</template>
 
       <template v-slot:cell(id)="data">
         <nuxt-link
           class="btn btn-block m-1 btn-outline-info"
-          style="color: white !important;"
-          :to="{name: 'projects-id', params: {id: data.value}}"
-        >👁️</nuxt-link>
+          style="color: white !important"
+          :to="{ name: 'projects-id', params: { id: data.value } }"
+          >👁️</nuxt-link
+        >
         <nuxt-link
           class="btn btn-block m-1 btn-outline-success"
-          style="color: white !important;"
-          :to="{name: 'projects-id-edit', params: {id: data.value}}"
-        >✏️</nuxt-link>
-        <b-button block class="m-1" @click="deleteTask(data.value)" variant="outline-danger">🗑</b-button>
+          style="color: white !important"
+          :to="{ name: 'projects-id-edit', params: { id: data.value } }"
+          >✏️</nuxt-link
+        >
+        <b-button
+          block
+          class="m-1"
+          @click="deleteProject(data.value)"
+          variant="outline-danger"
+          >🗑</b-button
+        >
       </template>
     </b-table>
   </div>
@@ -80,6 +91,13 @@ export default {
         },
       ],
     };
+  },
+  methods: {
+    ...mapActions("projects", ["deleteProjectAction"]),
+
+    async deleteProject(id) {
+      this.deleteProjectAction(id);
+    },
   },
   computed: {
     ...mapGetters("projects", ["projects"]),

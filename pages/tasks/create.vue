@@ -7,7 +7,11 @@
     <div>
       <b-form @submit.prevent="create">
         <b-form-group label="Title:">
-          <b-form-input v-model="form.title" required placeholder="Enter task title"></b-form-input>
+          <b-form-input
+            v-model="form.title"
+            required
+            placeholder="Enter task title"
+          ></b-form-input>
         </b-form-group>
         <b-form-group label="Description:">
           <b-form-textarea
@@ -19,11 +23,17 @@
         </b-form-group>
 
         <b-form-group>
-          <b-form-checkbox v-model="form.finished" value="1" unchecked-value>This task is completed</b-form-checkbox>
+          <b-form-checkbox v-model="form.finished" value="1" unchecked-value
+            >This task is completed</b-form-checkbox
+          >
         </b-form-group>
 
         <b-form-group label="Deadline:">
-          <input class="form-control" type="datetime-local" v-model="form.deadline" />
+          <input
+            class="form-control"
+            type="datetime-local"
+            v-model="form.deadline"
+          />
         </b-form-group>
 
         <b-form-group label="Project:">
@@ -33,7 +43,9 @@
             value-field="id"
             :options="projects"
           >
-            <option disabled value>Select the Project this Task belongs to</option>
+            <option disabled value>
+              Select the Project this Task belongs to
+            </option>
           </b-form-select>
         </b-form-group>
 
@@ -69,7 +81,7 @@ export default {
   },
   methods: {
     ...mapActions("tasks", ["addTaskAction"]),
-    
+
     create() {
       this.addTaskAction(this.form);
       return this.$router.push("/tasks");
