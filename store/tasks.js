@@ -23,6 +23,26 @@ export const getters = {
         // return state.tasks.filter(task => task.project.id == project_id)
 
     },
+    getTasksByUser: (state) => (user_id) => {
+
+        let tasksUser = [];
+        state.tasks.forEach(element => {
+            if (element.users_assigned) {
+                element.users_assigned.forEach(subElement => {
+
+                    if (subElement.id == user_id) {
+                        tasksUser.push(element);
+
+                    }
+
+                });
+            }
+        });
+        return tasksUser;
+
+        // return state.tasks.filter(task => task.project.id == project_id)
+
+    },
 
 }
 

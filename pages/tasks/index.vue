@@ -5,7 +5,11 @@
         <h1 class="title">📝 Tasks</h1>
       </div>
       <div class="col">
-        <nuxt-link class="btn btn-lg btn-outline-success float-right" to="/tasks/create">Create Task</nuxt-link>
+        <nuxt-link
+          class="btn btn-lg btn-outline-success float-right"
+          to="/tasks/create"
+          >Create Task</nuxt-link
+        >
       </div>
     </div>
 
@@ -15,7 +19,7 @@
       :per-page="perPage"
       aria-controls="tasks-table"
     ></b-pagination>
-    
+
     <div class="row">
       <div class="col">
         <p class="mt-3">Current Page: {{ currentPage }}</p>
@@ -35,21 +39,37 @@
       :current-page="currentPage"
       responsive
     >
-      <template v-slot:cell(deadline)="data">{{ format_date(data.value) }}</template>
+      <template v-slot:cell(deadline)="data">{{
+        format_date(data.value)
+      }}</template>
 
       <template v-slot:cell(id)="data">
         <nuxt-link
           class="btn btn-block m-1 btn-outline-info"
-          style="color: white !important;"
-          :to="{name: 'tasks-id', params: {id: data.value}}"
-        >👁️</nuxt-link>
+          style="color: white !important"
+          :to="{ name: 'tasks-id', params: { id: data.value } }"
+          >👁️</nuxt-link
+        >
         <nuxt-link
           class="btn btn-block m-1 btn-outline-success"
-          style="color: white !important;"
-          :to="{name: 'tasks-id-edit', params: {id: data.value}}"
-        >✏️</nuxt-link>
-        <b-button block class="m-1" @click="completeTask(data.value)" variant="outline-primary">✓</b-button>
-        <b-button block class="m-1" @click="deleteTask(data.value)" variant="outline-danger">🗑</b-button>
+          style="color: white !important"
+          :to="{ name: 'tasks-id-edit', params: { id: data.value } }"
+          >✏️</nuxt-link
+        >
+        <b-button
+          block
+          class="m-1"
+          @click="completeTask(data.value)"
+          variant="outline-primary"
+          >✓</b-button
+        >
+        <b-button
+          block
+          class="m-1"
+          @click="deleteTask(data.value)"
+          variant="outline-danger"
+          >🗑</b-button
+        >
       </template>
     </b-table>
   </div>
@@ -115,11 +135,18 @@ export default {
     },
   },
   computed: {
-    ...mapGetters("tasks", ["tasks"]),
+    ...mapGetters("tasks", ["tasks", "getTasksByUser"]),
+
+    userTasks() {
+      return this.getTasksByUser(this.user.id);
+    },
 
     rows() {
       return this.tasks.length;
     },
+  },
+  mounted() {
+    console.log(this.userTasks);
   },
 };
 </script>

@@ -113,22 +113,12 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   data() {
     return {
-      projects: "",
       users: "",
       task_finished: "",
     };
   },
   components: {
     Assign,
-  },
-  async asyncData({ $axios, params, store }) {
-    let { data: projects } = await $axios.$get("/projects");
-    let { data: users } = await $axios.$get("/users");
-
-    return {
-      projects,
-      users,
-    };
   },
   methods: {
     ...mapActions("tasks", [
