@@ -43,7 +43,7 @@
           >
         </div>
         <div class="col-md-2">
-          <nuxt-link to="/tasks">
+          <nuxt-link to="/projects">
             <b-button block variant="outline-dark">Back to Projects</b-button>
           </nuxt-link>
         </div>

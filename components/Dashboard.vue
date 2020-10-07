@@ -7,9 +7,7 @@
         header="Tasks"
         class="text-center"
       >
-        <b-card-text>
-          <h1>37</h1>
-        </b-card-text>
+        <h1>{{ tasks.length }}</h1>
       </b-card>
 
       <b-card
@@ -18,9 +16,7 @@
         header="Projects"
         class="text-center"
       >
-        <b-card-text>
-          <h1>7</h1>
-        </b-card-text>
+        <h1>{{ projects.length }}</h1>
       </b-card>
 
       <b-card
@@ -29,38 +25,68 @@
         header="Users"
         class="text-center"
       >
-        <b-card-text>
-          <h1>15</h1>
-        </b-card-text>
+        <h1>{{ users.length }}</h1>
       </b-card>
     </b-card-group>
     <div class="row">
       <div class="col">
-        <bar-chart
+        <PieChart
+          v-if="PieChartLoaded"
+          class="pt-5"
+          :data="pieChartData"
+          :options="pieChartOptions"
+          :height="250"
+        />
+      </div>
+
+      <div class="col">
+        <BarChart 
+          v-if="PieChartLoaded"
           class="pt-5"
           :data="barChartData"
           :options="barChartOptions"
           :height="250"
         />
       </div>
-      <div class="col"></div>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 export default {
   data() {
     return {
+      PieChartLoaded: false,
       barChartData: {
-        labels: ["Mindz", "Pitonsark", "Natta", "Juan", "Paco"],
+        labels: null,
         datasets: [
           {
             label: "Tasks",
-            data: [10, 15, 22, 30, 40],
+            data: null,
             backgroundColor: "#007bff",
           },
         ],
+      },
+      pieChartData: {
+        labels: ["Complete", "Incomplete"],
+        datasets: [
+          {
+            label: "Tasks",
+            data: null,
+            backgroundColor: ["#28a745", "#6c757d"],
+          },
+        ],
+      },
+      pieChartOptions: {
+        responsive: true,
+        title: {
+          display: true,
+          text: "Completed Tasks",
+          fontSize: 24,
+          fontColor: "#212529",
+        },
       },
       barChartOptions: {
         responsive: true,
@@ -69,7 +95,7 @@ export default {
         },
         title: {
           display: true,
-          text: "Users Assigned to Tasks",
+          text: "Top Tasks per Project",
           fontSize: 24,
           fontColor: "#212529",
         },
@@ -80,6 +106,7 @@ export default {
           xAxes: [
             {
               ticks: {
+                precision: 0,
                 beginAtZero: true,
               },
               gridLines: {
@@ -98,6 +125,55 @@ export default {
       },
     };
   },
+  computed: {
+    ...mapGetters("tasks", ["tasks", "getCompletedTasks"]),
+    ...mapGetters("projects", ["projects"]),
+    ...mapGetters("users", ["users"]),
+  },
+  async mounted() {
+    try {
+      let pieChartDataArray = [];
+      let { data: axiosTasks } = await this.$axios.$get("/tasks");
+
+      let completedTasks = axiosTasks.filter((task) => task.finished == true);
+
+      pieChartDataArray.push(completedTasks.length);
+
+      let incompleteTasks =
+        Number(axiosTasks.length) - Number(completedTasks.length);
+
+      pieChartDataArray.push(incompleteTasks);
+
+      // Assign the Data
+      this.pieChartData.datasets[0].data = pieChartDataArray;
+
+      let BarChartLabelsArray = [];
+      let BarChartDataArray = [];
+
+      var counts = {};
+
+      axiosTasks.forEach(function (x) {
+        if (x.project) {
+          counts[x.project.title] = (counts[x.project.title] || 0) + 1;
+        }
+      });
+
+      for (const [key, value] of Object.entries(counts)) {
+        BarChartLabelsArray.push(key);
+        BarChartDataArray.push(value);
+      }
+
+      // Assign the Data
+      this.barChartData.labels = BarChartLabelsArray;
+      this.barChartData.datasets[0].data = BarChartDataArray;
+
+      this.PieChartLoaded = true;
+    } catch (e) {
+      console.error(e);
+    }
+  },
+  watch: {},
+  created() {},
 };
 </script>
 

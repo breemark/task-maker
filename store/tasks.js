@@ -19,9 +19,7 @@ export const getters = {
             }
         });
         return tasksProject;
-
         // return state.tasks.filter(task => task.project.id == project_id)
-
     },
     getTasksByUser: (state) => (user_id) => {
 
@@ -39,11 +37,10 @@ export const getters = {
             }
         });
         return tasksUser;
-
-        // return state.tasks.filter(task => task.project.id == project_id)
-
     },
-
+    getCompletedTasks: (state) => {
+        return state.tasks.filter(task => task.finished == true);
+    }
 }
 
 export const mutations = {
