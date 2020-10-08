@@ -14,7 +14,7 @@
         <p>{{ project.content }}</p>
       </div>
     </div>
-    <div class="row">
+    <div class="row" v-if="user.is_admin == true">
       <div class="col-md">
         <p>
           This project has
@@ -50,70 +50,71 @@
       </div>
     </div>
     <hr />
+    <div v-if="user.is_admin == true">
+      <div v-if="tasks.length != 0">
+        <b-pagination
+          v-model="currentPage"
+          :total-rows="rows"
+          :per-page="perPage"
+          aria-controls="tasks-table"
+        ></b-pagination>
 
-    <div v-if="tasks.length != 0">
-      <b-pagination
-        v-model="currentPage"
-        :total-rows="rows"
-        :per-page="perPage"
-        aria-controls="tasks-table"
-      ></b-pagination>
+        <div class="row">
+          <div class="col">
+            <p class="mt-3">Current Page: {{ currentPage }}</p>
+          </div>
+          <div class="col">
+            <p class="mt-3 float-right">Total Tasks: {{ tasks.length }}</p>
+          </div>
+        </div>
 
-      <div class="row">
-        <div class="col">
-          <p class="mt-3">Current Page: {{ currentPage }}</p>
-        </div>
-        <div class="col">
-          <p class="mt-3 float-right">Total Tasks: {{ tasks.length }}</p>
-        </div>
+        <b-table
+          id="tasks-table"
+          striped
+          hover
+          :items="tasks"
+          :fields="fields"
+          :per-page="perPage"
+          :current-page="currentPage"
+          responsive
+        >
+          <template v-slot:cell(deadline)="data">{{
+            format_date(data.value)
+          }}</template>
+
+          <template v-slot:cell(id)="data">
+            <nuxt-link
+              class="btn btn-block m-1 btn-outline-info"
+              style="color: white !important"
+              :to="{ name: 'tasks-id', params: { id: data.value } }"
+              >👁️</nuxt-link
+            >
+            <nuxt-link
+              class="btn btn-block m-1 btn-outline-success"
+              style="color: white !important"
+              :to="{
+                name: 'tasks-id-edit',
+                params: { id: data.value },
+              }"
+              >✏️</nuxt-link
+            >
+            <b-button
+              block
+              class="m-1"
+              @click="completeTask(data.value)"
+              variant="outline-primary"
+              >✓</b-button
+            >
+            <b-button
+              block
+              class="m-1"
+              @click="deleteTask(data.value)"
+              variant="outline-danger"
+              >🗑</b-button
+            >
+          </template>
+        </b-table>
       </div>
-
-      <b-table
-        id="tasks-table"
-        striped
-        hover
-        :items="tasks"
-        :fields="fields"
-        :per-page="perPage"
-        :current-page="currentPage"
-        responsive
-      >
-        <template v-slot:cell(deadline)="data">{{
-          format_date(data.value)
-        }}</template>
-
-        <template v-slot:cell(id)="data">
-          <nuxt-link
-            class="btn btn-block m-1 btn-outline-info"
-            style="color: white !important"
-            :to="{ name: 'tasks-id', params: { id: data.value } }"
-            >👁️</nuxt-link
-          >
-          <nuxt-link
-            class="btn btn-block m-1 btn-outline-success"
-            style="color: white !important"
-            :to="{
-              name: 'tasks-id-edit',
-              params: { id: data.value },
-            }"
-            >✏️</nuxt-link
-          >
-          <b-button
-            block
-            class="m-1"
-            @click="completeTask(data.value)"
-            variant="outline-primary"
-            >✓</b-button
-          >
-          <b-button
-            block
-            class="m-1"
-            @click="deleteTask(data.value)"
-            variant="outline-danger"
-            >🗑</b-button
-          >
-        </template>
-      </b-table>
     </div>
   </div>
 </template>
@@ -124,6 +125,7 @@ import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
+  
   data() {
     return {
       perPage: 4,

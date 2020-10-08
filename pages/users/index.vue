@@ -74,7 +74,9 @@ import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 
 export default {
-  middleware: ["auth"],
+
+  middleware: ["auth", "admin"],
+
   data() {
     return {
       perPage: 5,

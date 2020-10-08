@@ -50,6 +50,8 @@ import { mapGetters, mapActions } from "vuex";
 import moment from "moment";
 
 export default {
+  middleware: ["auth", "admin"],
+
   data() {
     return {
       userClone: this.employee

@@ -42,7 +42,9 @@
 import { mapActions } from "vuex";
 
 export default {
-  middleware: ["auth"],
+
+  middleware: ["auth", "admin"],
+
   data() {
     return {
       form: {

@@ -8,8 +8,12 @@
       <b-collapse id="nav-collapse" is-nav>
         <b-navbar-nav v-if="authenticated">
           <b-nav-item to="/tasks">Tasks</b-nav-item>
-          <b-nav-item to="/projects">Projects</b-nav-item>
-          <b-nav-item to="/users">Users</b-nav-item>
+          <b-nav-item v-if="user.is_admin == true" to="/projects"
+            >Projects</b-nav-item
+          >
+          <b-nav-item v-if="user.is_admin == true" to="/users"
+            >Users</b-nav-item
+          >
         </b-navbar-nav>
 
         <b-navbar-nav v-if="authenticated" class="ml-auto">
@@ -18,7 +22,7 @@
               <strong>{{ user.name }}</strong>
             </template>
             <b-dropdown-item to="/me">Profile</b-dropdown-item>
-            <b-dropdown-item href="#">My Tasks</b-dropdown-item>
+
             <b-dropdown-item @click.prevent="logout">Logout</b-dropdown-item>
           </b-nav-item-dropdown>
         </b-navbar-nav>
@@ -39,6 +43,8 @@ export default {
   methods: {
     logout() {
       this.$auth.logout();
+
+      this.$router.push(`/`);
     },
   },
 };

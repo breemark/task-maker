@@ -29,18 +29,21 @@
       </b-card>
     </b-card-group>
     <div class="row">
-      <div class="col">
-        <PieChart
-          v-if="PieChartLoaded"
-          class="pt-5"
-          :data="pieChartData"
-          :options="pieChartOptions"
-          :height="250"
-        />
+      <div class="col-lg">
+        <div>
+          <PieChart
+            style="max-with: 600px !important"
+            v-if="PieChartLoaded"
+            class="pt-5"
+            :data="pieChartData"
+            :options="pieChartOptions"
+            :height="250"
+          />
+        </div>
       </div>
 
-      <div class="col">
-        <BarChart 
+      <div class="col-lg">
+        <BarChart
           v-if="PieChartLoaded"
           class="pt-5"
           :data="barChartData"

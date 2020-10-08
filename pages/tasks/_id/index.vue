@@ -71,7 +71,7 @@
 
     <hr />
     <div v-if="authenticated">
-      <div class="row justify-content-center" v-if="user.is_admin == true">
+      <div class="row justify-content-center">
         <div class="col-md-2">
           <b-button
             block
@@ -80,17 +80,17 @@
             >{{ !task_finished ? "Set Complete" : "Set Incomplete" }}</b-button
           >
         </div>
-        <div class="col-md-2">
+        <div v-if="user.is_admin" class="col-md-2">
           <b-button block v-b-modal.modal-1 variant="outline-primary"
             >Assign User</b-button
           >
         </div>
-        <div class="col-md-2">
+        <div v-if="user.is_admin" class="col-md-2">
           <nuxt-link :to="{ name: `tasks-id-edit`, params: { id: task.id } }">
             <b-button block variant="outline-info">Edit Task</b-button>
           </nuxt-link>
         </div>
-        <div class="col-md-2">
+        <div v-if="user.is_admin" class="col-md-2">
           <b-button @click="deleteTask(task.id)" block variant="outline-danger"
             >Delete Task</b-button
           >
@@ -111,6 +111,8 @@ import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
+  middleware: ["auth"],
+
   data() {
     return {
       users: "",

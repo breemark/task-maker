@@ -2,8 +2,10 @@
   <div class="container">
     <div>
       <h1 class="title">Task Maker</h1>
-      <br>
-      <Dashboard />
+      <br />
+      <div v-if="authenticated">
+        <Dashboard />
+      </div>
     </div>
   </div>
 </template>

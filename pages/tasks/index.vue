@@ -5,7 +5,17 @@
         <h1 class="title">📝 Tasks</h1>
       </div>
       <div class="col">
+        <b-button
+          v-if="user.is_admin"
+          @click="toggleAssigned()"
+          class="btn-lg float-right"
+          variant="outline-primary"
+          >{{ allTasks ? "Get my Tasks" : "Get all Tasks" }}</b-button
+        >
+      </div>
+      <div class="col">
         <nuxt-link
+          v-if="user.is_admin"
           class="btn btn-lg btn-outline-success float-right"
           to="/tasks/create"
           >Create Task</nuxt-link
@@ -25,7 +35,9 @@
         <p class="mt-3">Current Page: {{ currentPage }}</p>
       </div>
       <div class="col">
-        <p class="mt-3 float-right">Total Tasks: {{ tasks.length }}</p>
+        <p class="mt-3 float-right">
+          Total Tasks: {{ allTasks ? tasks.length : userTasks.length }}
+        </p>
       </div>
     </div>
 
@@ -33,7 +45,7 @@
       id="tasks-table"
       striped
       hover
-      :items="tasks"
+      :items="allTasks ? tasks : userTasks"
       :fields="fields"
       :per-page="perPage"
       :current-page="currentPage"
@@ -51,6 +63,7 @@
           >👁️</nuxt-link
         >
         <nuxt-link
+          v-if="user.is_admin"
           class="btn btn-block m-1 btn-outline-success"
           style="color: white !important"
           :to="{ name: 'tasks-id-edit', params: { id: data.value } }"
@@ -66,6 +79,7 @@
         <b-button
           block
           class="m-1"
+          v-if="user.is_admin"
           @click="deleteTask(data.value)"
           variant="outline-danger"
           >🗑</b-button
@@ -83,6 +97,7 @@ export default {
   middleware: ["auth"],
   data() {
     return {
+      allTasks: this.$auth.user.is_admin ? true : false,
       perPage: 9,
       currentPage: 1,
       fields: [
@@ -133,6 +148,10 @@ export default {
     async completeTask(id) {
       this.completeTaskAction(id);
     },
+
+    toggleAssigned() {
+      this.allTasks = !this.allTasks;
+    },
   },
   computed: {
     ...mapGetters("tasks", ["tasks", "getTasksByUser"]),
@@ -145,9 +164,7 @@ export default {
       return this.tasks.length;
     },
   },
-  mounted() {
-    console.log(this.userTasks);
-  },
+  mounted() {},
 };
 </script>
 

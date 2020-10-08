@@ -58,6 +58,8 @@ import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
+  middleware: ["auth", "admin"],
+
   data() {
     return {};
   },

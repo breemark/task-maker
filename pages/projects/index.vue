@@ -72,7 +72,7 @@
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  middleware: ["auth"],
+  middleware: ["auth", "admin"],
   data() {
     return {
       perPage: 9,
