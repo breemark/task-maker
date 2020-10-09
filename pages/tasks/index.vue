@@ -10,7 +10,7 @@
           @click="toggleAssigned()"
           class="btn-lg float-right"
           variant="outline-primary"
-          >{{ allTasks ? "Get my Tasks" : "Get all Tasks" }}</b-button
+          >{{ allTasks ? "My Tasks" : "All Tasks" }}</b-button
         >
       </div>
       <div class="col">
@@ -23,7 +23,7 @@
       </div>
     </div>
 
-    <b-pagination
+    <b-pagination class="mt-5"
       v-model="currentPage"
       :total-rows="rows"
       :per-page="perPage"
