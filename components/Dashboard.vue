@@ -1,5 +1,10 @@
 <template>
   <div class="container">
+    <div class="row mb-2">
+      <div class="col">
+        <h1>Dashboard</h1>
+      </div>
+    </div>
     <b-card-group deck>
       <b-card
         bg-variant="primary"

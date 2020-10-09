@@ -1,7 +1,9 @@
 <template>
   <div>
     <b-navbar toggleable="lg" type="light" variant="light">
-      <b-navbar-brand to="/">TM</b-navbar-brand>
+      <b-navbar-brand to="/">
+        <img id="logo" src="~/assets/logo.png" />
+      </b-navbar-brand>
 
       <b-navbar-toggle target="nav-collapse"></b-navbar-toggle>
 
@@ -51,4 +53,10 @@ export default {
 </script>
 
 <style>
+#logo {
+  width: 40px;
+}
+#logo:hover {
+  filter: brightness(150%);
+}
 </style>

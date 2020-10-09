@@ -1,10 +1,12 @@
 <template>
-  <div class="container">
+  <div class="container-fluid">
     <div>
-      <h1 class="title">Task Maker</h1>
       <br />
       <div v-if="authenticated">
         <Dashboard />
+      </div>
+      <div v-else>
+        <LandingPage />
       </div>
     </div>
   </div>
@@ -12,6 +14,7 @@
 
 <script>
 import Dashboard from "~/components/Dashboard";
+import LandingPage from "~/components/LandingPage";
 
 export default {
   components: {
