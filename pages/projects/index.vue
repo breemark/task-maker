@@ -82,9 +82,9 @@ export default {
           key: "title",
           sortable: true,
         },
-        {
-          key: "content",
-        },
+        // {
+        //   key: "content",
+        // },
         {
           key: "id",
           label: "Operations",

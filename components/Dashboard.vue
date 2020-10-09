@@ -33,7 +33,7 @@
         <h1>{{ users.length }}</h1>
       </b-card>
     </b-card-group>
-    <div class="row">
+    <div class="row mb-5">
       <div class="col-lg">
         <div>
           <PieChart
