@@ -59,8 +59,8 @@ export default {
 
 
     async create() {
-      await this.addUserAction(this.form);
-      return this.$router.push("/users");
+      let userId = await this.addUserAction(this.form);
+      return this.$router.push(`/users/${userId}`);
     },
   },
 };

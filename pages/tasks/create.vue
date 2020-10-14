@@ -82,9 +82,9 @@ export default {
   methods: {
     ...mapActions("tasks", ["addTaskAction"]),
 
-    create() {
-      this.addTaskAction(this.form);
-      return this.$router.push("/tasks");
+    async create() {
+      let taskId = await this.addTaskAction(this.form);
+      return this.$router.push(`/tasks/${taskId}`);
     },
   },
 };

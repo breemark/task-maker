@@ -23,8 +23,10 @@ export const actions = {
     },
     // CRUD
     async addProjectAction(context, project) {
-        await this.$axios.$post("/projects", project);
+        let res = await this.$axios.$post("/projects", project);
+        let projectId = res.data.id;
         context.commit("setProjects", (await this.$axios.$get("/projects")).data);
+        return projectId;
     },
     async editProjectAction(context, project) {
         await this.$axios.patch(`/projects/${project.id}`, project);
@@ -33,7 +35,7 @@ export const actions = {
     async deleteProjectAction(context, project) {
         await this.$axios.$delete(`/projects/${project}`);
         context.commit("setProjects", (await this.$axios.$get("/projects")).data);
-        context.commit("tasks/setTasks", (await this.$axios.$get("/tasks")).data, {root: true});
+        context.commit("tasks/setTasks", (await this.$axios.$get("/tasks")).data, { root: true });
 
     },
 }

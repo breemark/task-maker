@@ -26,8 +26,10 @@ export const actions = {
         context.commit("setUsers", (await this.$axios.$get("/users")).data);
     },
     async addUserAction(context, user) {
-        await this.$axios.$post("/users", user);
+        let res = await this.$axios.$post("/users", user);
+        let userId = res.id;
         context.commit("setUsers", (await this.$axios.$get("/users")).data);
+        return userId;
     },
     async editUserAction(context, user) {
         await this.$axios.patch(`/users/${user.id}`, user);

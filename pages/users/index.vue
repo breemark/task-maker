@@ -12,6 +12,7 @@
         >
       </div>
     </div>
+    <DeleteUserModal v-bind:userId="userId" />
 
     <b-pagination
       v-model="currentPage"
@@ -60,7 +61,8 @@
           v-if="user.id != data.value"
           block
           class="m-1"
-          @click="deleteUser(data.value)"
+          v-b-modal.modal-2
+          @click="sendInfo(data.value)"
           variant="outline-danger"
           >🗑</b-button
         >
@@ -71,10 +73,11 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
+import DeleteUserModal from "@/components/DeleteUserModal";
+
 import moment from "moment";
 
 export default {
-
   middleware: ["auth", "admin"],
 
   data() {
@@ -111,10 +114,10 @@ export default {
           label: "Operations",
         },
       ],
+      userId: null,
     };
   },
   methods: {
-    ...mapActions("users", ["deleteUserAction"]),
     format_date(value) {
       if (value) {
         return moment.utc(String(value)).format("dddd, MMMM Do YYYY, hh:mm a");
@@ -122,6 +125,9 @@ export default {
     },
     async deleteUser(id) {
       this.deleteUserAction(id);
+    },
+    sendInfo(item) {
+      this.userId = item;
     },
   },
   computed: {

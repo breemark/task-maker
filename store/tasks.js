@@ -57,8 +57,10 @@ export const actions = {
 
     // CRUD operations
     async addTaskAction(context, task) {
-        await this.$axios.$post("/tasks", task);
+        let res = await this.$axios.$post("/tasks", task);
+        let taskId = res.data.id;
         context.commit("setTasks", (await this.$axios.$get("/tasks")).data);
+        return taskId;
     },
     async deleteTaskAction(context, task) {
         await this.$axios.$delete(`/tasks/${task}`);

@@ -32,8 +32,6 @@
 import { mapActions } from "vuex";
 
 export default {
-
-
   middleware: ["auth", "admin"],
 
   data() {
@@ -48,8 +46,8 @@ export default {
     ...mapActions("projects", ["addProjectAction"]),
 
     async create() {
-      this.addProjectAction(this.form);
-      return this.$router.push("/projects");
+      let projectId = await this.addProjectAction(this.form);
+      return this.$router.push(`/projects/${projectId}`);
     },
   },
 };

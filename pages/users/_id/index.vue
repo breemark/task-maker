@@ -23,6 +23,7 @@
         <p>{{ employee.is_admin ? "Administrator 🔑" : "User 👤" }}</p>
       </div>
     </div>
+    <DeleteUserModal v-bind:userId="employee.id" />
 
     <div v-if="authenticated">
       <div class="row justify-content-center" v-if="user.is_admin == true">
@@ -34,10 +35,7 @@
           </nuxt-link>
         </div>
         <div class="col-md-2" v-if="user.id != employee.id">
-          <b-button
-            @click="deleteUser(employee.id)"
-            block
-            variant="outline-danger"
+          <b-button v-b-modal.modal-2 block variant="outline-danger"
             >Delete User</b-button
           >
         </div>
@@ -53,6 +51,7 @@
 </template>
 
 <script>
+import DeleteUserModal from "@/components/DeleteUserModal";
 import Assign from "@/components/Assign";
 import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
@@ -64,14 +63,7 @@ export default {
     return {};
   },
 
-  methods: {
-    ...mapActions("users", ["deleteUserAction"]),
 
-    async deleteUser(id) {
-      this.deleteUserAction(id);
-      this.$router.push(`/users/`);
-    },
-  },
   computed: {
     ...mapGetters("users", ["getUserById"]),
 
