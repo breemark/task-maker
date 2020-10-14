@@ -12,6 +12,7 @@
         >
       </div>
     </div>
+    <DeleteProjectModal v-bind:projectId="projectId" />
 
     <b-pagination
       v-model="currentPage"
@@ -59,7 +60,8 @@
         <b-button
           block
           class="m-1"
-          @click="deleteProject(data.value)"
+          v-b-modal.modal-3
+          @click="sendInfo(data.value)"
           variant="outline-danger"
           >🗑</b-button
         >
@@ -82,14 +84,12 @@ export default {
           key: "title",
           sortable: true,
         },
-        // {
-        //   key: "content",
-        // },
         {
           key: "id",
           label: "Operations",
         },
       ],
+      projectId: null,
     };
   },
   methods: {
@@ -97,6 +97,10 @@ export default {
 
     async deleteProject(id) {
       this.deleteProjectAction(id);
+    },
+
+    sendInfo(item) {
+      this.projectId = item;
     },
   },
   computed: {

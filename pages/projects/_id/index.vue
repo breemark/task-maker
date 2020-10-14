@@ -25,6 +25,8 @@
       </div>
     </div>
 
+    <DeleteProjectModal v-bind:projectId="project.id" />
+
     <div v-if="authenticated">
       <div class="row justify-content-center" v-if="user.is_admin == true">
         <div class="col-md-2">
@@ -35,10 +37,7 @@
           </nuxt-link>
         </div>
         <div class="col-md-2">
-          <b-button
-            @click="deleteTask(project.id)"
-            block
-            variant="outline-danger"
+          <b-button v-b-modal.modal-3 block variant="outline-danger"
             >Delete Project</b-button
           >
         </div>
@@ -52,6 +51,7 @@
     <hr />
     <div v-if="user.is_admin == true">
       <div v-if="tasks.length != 0">
+
         <b-pagination
           v-model="currentPage"
           :total-rows="rows"
@@ -120,15 +120,16 @@
 </template>
 
 <script>
+import DeleteProjectModal from "@/components/DeleteProjectModal";
+
 import Assign from "@/components/Assign";
 import moment from "moment";
 import { mapGetters, mapActions } from "vuex";
 
 export default {
-  
   data() {
     return {
-      perPage: 4,
+      perPage: 5,
       currentPage: 1,
       fields: [
         {
@@ -156,6 +157,8 @@ export default {
 
   methods: {
     ...mapActions("tasks", ["deleteTaskAction", "completeTaskAction"]),
+    // ...mapActions("projects", ["deleteProjectAction"]),
+
     format_date(value) {
       if (value) {
         return moment.utc(String(value)).format("dddd, MMMM Do YYYY, hh:mm a");
@@ -179,7 +182,7 @@ export default {
       return this.getTasksByProject(this.$route.params.id);
     },
     rows() {
-      return this.getTasksByProject.length;
+      return this.getTasksByProject(this.$route.params.id).length;
     },
   },
 };
