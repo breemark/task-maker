@@ -18,17 +18,12 @@
       </div>
       <small class="float-right"
         >Made by
-        <a href="http://britomaximiliano.com" target="_blank"
-          >Brito Maximiliano</a
+        <a href="http://torres93.com" target="_blank"
+          >Maximiliano Torres</a
         >
       </small>
       <hr class="my-4" />
-      <p>
-        Task Maker is the front end client for the
-        <strong>
-          <a href="http://braitos.com" target="_blank">BRAITOS API</a></strong
-        >
-      </p>
+
       <p class="lead mt-5">
         <nuxt-link
           to="/register"
