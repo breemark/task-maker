@@ -70,7 +70,7 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: 'https://braitos.com/api/v1'
+    baseURL: 'https://taskmaker.in/api/v1'
   },
   /**
    * Auth
